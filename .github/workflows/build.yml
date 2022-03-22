@@ -22,7 +22,6 @@ jobs:
           KERNEL_SOURCE: ${{ secrets.KERNEL_SOURCE }}
           KERNEL_DEFCONFIG: ${{ secrets.KERNEL_DEFCONFIG }}
           DEVICE_CODENAME: ${{ secrets.DEVICE_CODENAME }}
-          CHAT_ID: ${{ secrets.CHAT_ID }}
           ANYKERNEL: ${{ secrets.ANYKERNEL }}
         run: |
           export token=${TG_TOKEN}
