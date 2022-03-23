@@ -13,7 +13,7 @@ GCCbPath="${MainPath}/GCC32"
 MainZipGCCaPath="${MainPath}/GCC64-zip"
 MainZipGCCbPath="${MainPath}/GCC32-zip"
 
-git clone $KERNEL_SOURCE -b X00TD $DEVICE_CODENAME
+git clone $KERNEL_SOURCE -b caf $DEVICE_CODENAME
 
 ClangPath=${MainClangZipPath}
 [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
@@ -107,7 +107,7 @@ function finerr() {
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 [NLV][$KERNELNAME]-$DEVICE_CODENAME-EAS-4.4.281-$DATE.zip *
+    zip -r9 [NLV][$KERNELNAME]-$DEVICE_CODENAME-EAS-4.4.205-$DATE.zip *
     cd ..
 }
 compile
