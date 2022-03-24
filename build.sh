@@ -81,7 +81,7 @@ make -j$(nproc) ARCH=arm64 O=out \
 	finerr
 	exit 1
    fi
-  git clone --depth=1 $ANYKERNEL -b main AnyKernel
+  git clone --depth=1 $ANYKERNEL -b eas-clang AnyKernel
 	cp $IMAGE AnyKernel
 }
 # Push kernel to channel
@@ -107,7 +107,7 @@ function finerr() {
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 [NLV][$KERNELNAME]-$DEVICE_CODENAME-EAS-4.4.280-$DATE.zip *
+    zip -r9 [NLV][$KERNELNAME]-EAS-$DEVICE_CODENAME-4.4.280-$DATE.zip *
     cd ..
 }
 compile
