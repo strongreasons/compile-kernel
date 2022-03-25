@@ -29,7 +29,7 @@ tar -xf gcc64.tar.gz -C $GCCaPath
 wget -q https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/+archive/refs/tags/android-12.0.0_r32.tar.gz -O "gcc32.tar.gz"
 tar -xf gcc32.tar.gz -C $GCCbPath
 
-# Prepare1
+# Prepare2
 KERNEL_ROOTDIR=$(pwd)/$DEVICE_CODENAME # IMPORTANT ! Fill with your kernel source root directory.
 export LD=ld.lld
 export KERNELNAME=EW
