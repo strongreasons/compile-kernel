@@ -107,7 +107,7 @@ function finerr() {
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 [NLV][$KERNELNAME]-EASperf-$DEVICE_CODENAME-4.4.302-$DATE.zip *
+    zip -r9 [NLV][$KERNELNAME]-EASperf-Zeppelin-$DEVICE_CODENAME-4.4.302-$DATE.zip *
     cd ..
 }
 compile
