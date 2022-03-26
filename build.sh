@@ -13,7 +13,7 @@ GCCbPath="${MainPath}/GCC32"
 MainZipGCCaPath="${MainPath}/GCC64-zip"
 MainZipGCCbPath="${MainPath}/GCC32-zip"
 
-git clone $KERNEL_SOURCE -b eas $DEVICE_CODENAME
+git clone $KERNEL_SOURCE -b mineas $DEVICE_CODENAME
 
 ClangPath=${MainClangZipPath}
 [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
@@ -81,7 +81,7 @@ make -j$(nproc) ARCH=arm64 O=out \
 	finerr
 	exit 1
    fi
-  git clone --depth=1 $ANYKERNEL -b eas-clang AnyKernel
+  git clone --depth=1 $ANYKERNEL -b minmaxeas AnyKernel
 	cp $IMAGE AnyKernel
 }
 # Push kernel to channel
@@ -100,14 +100,14 @@ function finerr() {
         -d chat_id="$TG_CHAT_ID" \
         -d "disable_web_page_preview=true" \
         -d "parse_mode=markdown" \
-        -d text="Aku sudah lelah compile kernel,Dan aku memilih menyerah ;(,tolong beri aku motivasi"
+        -d text="I'm tired of compiling kernels,And I choose to give up...please give me motivation"
     exit 1
 }
 
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 [NLV][$KERNELNAME]-EASperf-Zeppelin-$DEVICE_CODENAME-4.4.302-$DATE.zip *
+    zip -r9 [EOL][$KERNELNAME]-Siren-EASperf-$DEVICE_CODENAME-4.4.302.zip *
     cd ..
 }
 compile
