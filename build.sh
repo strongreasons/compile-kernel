@@ -13,7 +13,7 @@ GCCbPath="${MainPath}/GCC32"
 MainZipGCCaPath="${MainPath}/GCC64-zip"
 MainZipGCCbPath="${MainPath}/GCC32-zip"
 
-git clone $KERNEL_SOURCE -b mineas $DEVICE_CODENAME
+git clone $KERNEL_SOURCE -b tpd $DEVICE_CODENAME
 
 ClangPath=${MainClangZipPath}
 [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
@@ -81,7 +81,7 @@ make -j$(nproc) ARCH=arm64 O=out \
 	finerr
 	exit 1
    fi
-  git clone --depth=1 $ANYKERNEL -b minmaxeas AnyKernel
+  git clone --depth=1 $ANYKERNEL -b main AnyKernel
 	cp $IMAGE AnyKernel
 }
 # Push kernel to channel
@@ -107,7 +107,7 @@ function finerr() {
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 [EOL][$KERNELNAME]-Siren-EASperf-$DEVICE_CODENAME-NLV-4.4.302.zip *
+    zip -r9 [EOL][$KERNELNAME]-Siren-HMP-TPD-$DEVICE_CODENAME-NLV-4.4.302.zip *
     cd ..
 }
 compile
