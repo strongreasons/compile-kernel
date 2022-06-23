@@ -13,20 +13,20 @@ GCCbPath="${MainPath}/GCC32"
 MainZipGCCaPath="${MainPath}/GCC64-zip"
 MainZipGCCbPath="${MainPath}/GCC32-zip"
 
-git clone $KERNEL_SOURCE -b tpd $DEVICE_CODENAME
+git clone $KERNEL_SOURCE -b master-nlv $DEVICE_CODENAME
 
 ClangPath=${MainClangZipPath}
 [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
 mkdir $ClangPath
 rm -rf $ClangPath/*
-wget -q  https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/master/clang-r445002.tar.gz -O "clang-r445002.tar.gz"
-tar -xf clang-r445002.tar.gz -C $ClangPath
+wget -q  https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/master/clang-r450784e.tar.gz -O "clang-r445002.tar.gz"
+tar -xf clang-r450784e.tar.gz -C $ClangPath
 
 mkdir $GCCaPath
 mkdir $GCCbPath
-wget -q https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+archive/refs/tags/android-12.1.0_r4.tar.gz -O "gcc64.tar.gz"
+wget -q https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+archive/refs/tags/android-12.1.0_r8.tar.gz -O "gcc64.tar.gz"
 tar -xf gcc64.tar.gz -C $GCCaPath
-wget -q https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/+archive/refs/tags/android-12.1.0_r4.tar.gz -O "gcc32.tar.gz"
+wget -q https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/+archive/refs/tags/android-12.1.0_r8.tar.gz -O "gcc32.tar.gz"
 tar -xf gcc32.tar.gz -C $GCCbPath
 
 # Prepare
@@ -81,7 +81,7 @@ make -j$(nproc) ARCH=arm64 O=out \
 	finerr
 	exit 1
    fi
-  git clone --depth=1 $ANYKERNEL -b main AnyKernel
+  git clone --depth=1 $ANYKERNEL -b hmp AnyKernel
 	cp $IMAGE AnyKernel
 }
 # Push kernel to channel
@@ -107,7 +107,7 @@ function finerr() {
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 [EOL][$KERNELNAME]-Siren-HMP-TPD-$DEVICE_CODENAME-NLV-4.4.302.zip *
+    zip -r9 [EOL][$KERNELNAME]-Siren-HMP-$DEVICE_CODENAME-NLV-4.4.302.zip *
     cd ..
 }
 compile
