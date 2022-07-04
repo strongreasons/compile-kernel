@@ -107,7 +107,7 @@ function finerr() {
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 [EOL][$KERNELNAME]-HMP-$DEVICE_CODENAME-NLV-4.4.302.zip *
+    zip -r9 [EOL][$KERNELNAME]-HMP-$DEVICE_CODENAME-LV-4.4.302.zip *
     cd ..
 }
 compile
