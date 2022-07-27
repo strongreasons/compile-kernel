@@ -32,12 +32,12 @@ tar -xf gcc32.tar.gz -C $GCCbPath
 # Prepare
 KERNEL_ROOTDIR=$(pwd)/$DEVICE_CODENAME # IMPORTANT ! Fill with your kernel source root directory.
 export LD=ld.lld
-export KERNELNAME=Zenfone
+export KERNELNAME=StRess
 export KBUILD_BUILD_USER=queen # Change with your own name or else.
 IMAGE=$(pwd)/$DEVICE_CODENAME/out/arch/arm64/boot/Image.gz-dtb
 CLANG_VER="$("$ClangPath"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
 LLD_VER="$("$ClangPath"/bin/ld.lld --version | head -n 1)"
-export KBUILD_COMPILER_STRING="$CLANG_VER with $LLD_VER"
+export KBUILD_COMPILER_STRING="$CLANG_VER with $LLD_VER X GCC 4.9"
 DATE=$(date +"%F-%S")
 START=$(date +"%s")
 PATH=${ClangPath}/bin:${GCCaPath}/bin:${GCCbPath}/bin:${PATH}
