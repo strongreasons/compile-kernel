@@ -24,6 +24,7 @@ jobs:
           KERNEL_DEFCONFIG: ${{ secrets.KERNEL_DEFCONFIG }}
           DEVICE_CODENAME: ${{ secrets.DEVICE_CODENAME }}
           ANYKERNEL: ${{ secrets.ANYKERNEL }}
+   commands:
           - git config --global user.name "$USERNAME"
           - git config --global user.email "$EMAIL"
         run: |
