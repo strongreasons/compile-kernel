@@ -18,15 +18,11 @@ jobs:
         env:
           TOKEN: ${{ secrets.TOKEN }}
           USERNAME: ${{ secrets.USERNAME }}
-          EMAIL: ${{ secrets.EMAIL }}
           TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
           TG_TOKEN: ${{ secrets.TG_TOKEN }}
           KERNEL_DEFCONFIG: ${{ secrets.KERNEL_DEFCONFIG }}
           DEVICE_CODENAME: ${{ secrets.DEVICE_CODENAME }}
           ANYKERNEL: ${{ secrets.ANYKERNEL }}
-   commands:
-          - git config --global user.name "$USERNAME"
-          - git config --global user.email "$EMAIL"
         run: |
           export token=${TG_TOKEN}
           bash build.sh
