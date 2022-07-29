@@ -32,7 +32,7 @@ tar -xf gcc32.tar.gz -C $GCCbPath
 # Prepared
 KERNEL_ROOTDIR=$(pwd)/$DEVICE_CODENAME # IMPORTANT ! Fill with your kernel source root directory.
 export LD=ld.lld
-export KERNELNAME=StRess
+export KERNELNAME=TheOneMemory
 export KBUILD_BUILD_USER=queen # Change with your own name or else.
 IMAGE=$(pwd)/$DEVICE_CODENAME/out/arch/arm64/boot/Image.gz-dtb
 CLANG_VER="$("$ClangPath"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
@@ -107,7 +107,7 @@ function finerr() {
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 [EOL][$KERNELNAME]-HMP-$DEVICE_CODENAME-LV-4.4.302.zip *
+    zip -r9 [Hayzel][$KERNELNAME]-HMP-$DEVICE_CODENAME-NLV-4.4.205.zip *
     cd ..
 }
 compile
