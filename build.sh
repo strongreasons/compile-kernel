@@ -81,7 +81,7 @@ make -j$(nproc) ARCH=arm64 O=out \
 	finerr
 	exit 1
    fi
-  git clone $ANYKERNEL -b hmp AnyKernel
+  git clone $ANYKERNEL -b master AnyKernel
 	cp $IMAGE AnyKernel
 }
 # Push kernel to channel
