@@ -36,8 +36,9 @@ export KERNELNAME=TheOneMemory
 export KBUILD_BUILD_USER=queen # Change with your own name or else.
 IMAGE=$(pwd)/$DEVICE_CODENAME/out/arch/arm64/boot/Image.gz-dtb
 CLANG_VER="$("$ClangPath"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
+GCC_VER="${MainPath}/GCC64/bin/aarch64-linux-android-gcc  --version | head -n 1)
 LLD_VER="$("$ClangPath"/bin/ld.lld --version | head -n 1)"
-export KBUILD_COMPILER_STRING="$CLANG_VER with $GCCaPath"
+export KBUILD_COMPILER_STRING="$CLANG_VER x $GCC_VER"
 DATE=$(date +"%F-%S")
 START=$(date +"%s")
 
