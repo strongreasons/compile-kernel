@@ -13,7 +13,7 @@ GCCbPath="${MainPath}/GCC32"
 MainZipGCCaPath="${MainPath}/GCC64-zip"
 MainZipGCCbPath="${MainPath}/GCC32-zip"
 
-git clone --depth=1 https://$USERNAME:$TOKEN@github.com/strongreasons/kernel_asus_sdm660 -b hmp $DEVICE_CODENAME
+git clone --depth=1 https://$USERNAME:$TOKEN@github.com/strongreasons/kernel_asus_sdm660 -b eas-12 $DEVICE_CODENAME
 
 ClangPath=${MainClangZipPath}
 [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
@@ -81,7 +81,7 @@ make -j$(nproc) ARCH=arm64 O=out \
 	finerr
 	exit 1
    fi
-  git clone $ANYKERNEL -b master AnyKernel
+  git clone $ANYKERNEL -b eas-12 AnyKernel
 	cp $IMAGE AnyKernel
 }
 # Push kernel to channel
