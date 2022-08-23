@@ -38,9 +38,12 @@ IMAGE=$(pwd)/$DEVICE_CODENAME/out/arch/arm64/boot/Image.gz-dtb
 CLANG_VER="$("$ClangPath"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
 GCC_VER="$("$GCCaPath"/bin/aarch64-linux-android  --version | head -n 1)"
 LLD_VER="$("$ClangPath"/bin/ld.lld --version | head -n 1)"
-export KBUILD_COMPILER_STRING="$CLANG_VER x $GCC_VER"
+export KBUILD_COMPILER_STRING="$CLANG_VER with $GCC_VER"
 DATE=$(date +"%F-%S")
 START=$(date +"%s")
+
+# Java
+command -v java > /dev/null 2>&1
 
 # Telegram
 export BOT_MSG_URL="https://api.telegram.org/bot$TG_TOKEN/sendMessage"
@@ -85,14 +88,19 @@ make -j$(nproc) ARCH=arm64 O=out \
   git clone $ANYKERNEL -b eas-12 AnyKernel
 	cp $IMAGE AnyKernel
 }
+tg_post_msg() {
+	curl -s -X POST "$BOT_MSG_URL" -d chat_id="$TG_CHAT_ID" \
+	-d "disable_web_page_preview=true" \
+	-d "parse_mode=html" \
+	-d text="$1"
+}
 # Push kernel to channel
 function push() {
     cd AnyKernel
-    ZIP=$(echo *.zip)
-    curl -F document=@$ZIP "https://api.telegram.org/bot$TG_TOKEN/sendDocument" \
+    curl -F document="@$ZIP_FINAL.zip" "https://api.telegram.org/bot$TG_TOKEN/sendDocument" \
         -F chat_id="$TG_CHAT_ID" \
         -F "disable_web_page_preview=true" \
-        -F "parse_mode=html" \
+        -F "parse_mode=Markdown" \
         -F caption="✅ Compile took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>$DEVICE_CODENAME</b> | <b>${KBUILD_COMPILER_STRING}</b>"
 }
 # Fin Error
@@ -108,7 +116,16 @@ function finerr() {
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 [SL]$KERNELNAME-EAS-$DEVICE_CODENAME-LV-4.4.302.zip *
+    zip -r9 $KERNELNAME-$DEVICE_CODENAME-"$DATE" . -x ".git*" -x "README.md" -x "*.zip"
+
+    ZIP_FINAL="$KERNELNAME-$DEVICE_CODENAME-$DATE"
+
+    msg "|| Signing Zip ||"
+    tg_post_msg "<code>🗝️ Signing Zip file with AOSP keys..</code>"
+
+	curl -sLo zipsigner-4.0.jar https://github.com/baalajimaestro/AnyKernel3/raw/master/zipsigner-4.0.jar
+	java -jar zipsigner-4.0.jar "$ZIP_FINAL".zip "$ZIP_FINAL"-signed.zip
+	ZIP_FINAL="$ZIP_FINAL-signed"
     cd ..
 }
 compile
