@@ -62,7 +62,7 @@ make -j$(nproc) ARCH=arm64 O=out \
     LD_LIBRARY_PATH="${ClangPath}/lib64:${LD_LIBRARY_PATH}" \
     PATH=$ClangPath/bin:$GCCaPath/bin:$GCCbPath/bin:/usr/bin:${PATH} \
     PATH=$GCCaPath/aarch64/aarch64-linux-android-4.9/bin:${PATH} \
-    PATH=GCCbPath/arm/arm-linux-androideabi-4.9/bin:${PATH} \
+    PATH=$GCCbPath/arm/arm-linux-androideabi-4.9/bin:${PATH} \
     CC=${ClangPath}/bin/clang \
     NM=${ClangPath}/bin/llvm-nm \
     CXX=${ClangPath}/bin/clang++ \
