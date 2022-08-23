@@ -43,9 +43,8 @@ export LD=ld.lld
 export KBUILD_BUILD_USER=queen # Change with your own name or else.
 IMAGE=$(pwd)/$DEVICE_CODENAME/out/arch/arm64/boot/Image.gz-dtb
 CLANG_VER="$("$ClangPath"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
-GCC_VER="$("$GCCaPath"/bin/aarch64-linux-android  --version | head -n 1)"
 LLD_VER="$("$ClangPath"/bin/ld.lld --version | head -n 1)"
-export KBUILD_COMPILER_STRING="$CLANG_VER with $GCC_VER"
+export KBUILD_COMPILER_STRING="$CLANG_VER"
 DATE=$(date +"%F-%S")
 START=$(date +"%s")
 
@@ -101,7 +100,7 @@ function push() {
         -F chat_id="$TG_CHAT_ID" \
         -F "disable_web_page_preview=true" \
         -F "parse_mode=Markdown" \
-        -F caption="✅ Compile took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>$DEVICE_CODENAME</b> | <b>${KBUILD_COMPILER_STRING}</b>"
+        -F caption="🟢 Compile took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>$DEVICE_CODENAME</b> | <b>${KBUILD_COMPILER_STRING}</b>"
 }
 # Find Error
 function finerr() {
@@ -115,12 +114,12 @@ function finerr() {
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 $KERNELNAME-$VERSION-$VARIANT-"$DATE" . -x ".git*" -x "README.md" -x "*.zip"
+    zip -r9 $KERNELNAME-[$VERSION]-$VARIANT-"$DATE" . -x ".git*" -x "README.md" -x "*.zip"
 
-    ZIP_FINAL="$KERNELNAME-$VERSION-$VARIANT-$DATE"
+    ZIP_FINAL="$KERNELNAME-[$VERSION]-$VARIANT-$DATE"
 
     msg "|| Signing Zip ||"
-    tg_post_msg "<code>🔑Signing Zip file with AOSP keys...</code>"
+    tg_post_msg "<code>🔑 Signing Zip file with AOSP keys..</code>"
 
 	curl -sLo zipsigner-4.0.jar https://github.com/baalajimaestro/AnyKernel3/raw/master/zipsigner-4.0.jar
 	java -jar zipsigner-4.0.jar "$ZIP_FINAL".zip "$ZIP_FINAL"-signed.zip
