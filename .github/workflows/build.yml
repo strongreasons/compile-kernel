@@ -23,6 +23,7 @@ jobs:
           KERNEL_DEFCONFIG: ${{ secrets.KERNEL_DEFCONFIG }}
           DEVICE_CODENAME: ${{ secrets.DEVICE_CODENAME }}
           ANYKERNEL: ${{ secrets.ANYKERNEL }}
+          TZ: Asia/Shanghai
         run: |
           export token=${TG_TOKEN}
           bash build.sh
