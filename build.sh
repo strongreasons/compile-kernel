@@ -13,8 +13,15 @@ GCCbPath="${MainPath}/GCC32"
 MainZipGCCaPath="${MainPath}/GCC64-zip"
 MainZipGCCbPath="${MainPath}/GCC32-zip"
 
+# Identity
+KERNELNAME=TheOneMemory
+VERSION=SL
+VARIANT=EAS
+
+# Clone Kernel Source
 git clone --depth=1 https://$USERNAME:$TOKEN@github.com/strongreasons/kernel_asus_sdm660 -b eas-12 $DEVICE_CODENAME
 
+# Clone AOSP Clang
 ClangPath=${MainClangZipPath}
 [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
 mkdir $ClangPath
@@ -22,6 +29,7 @@ rm -rf $ClangPath/*
 wget -q  https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/master/clang-r458507.tar.gz -O "clang-r458507.tar.gz"
 tar -xf clang-r458507.tar.gz -C $ClangPath
 
+# Clone GCC
 mkdir $GCCaPath
 mkdir $GCCbPath
 wget -q https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+archive/refs/tags/android-12.1.0_r16.tar.gz -O "gcc64.tar.gz"
@@ -32,7 +40,6 @@ tar -xf gcc32.tar.gz -C $GCCbPath
 # Prepare
 KERNEL_ROOTDIR=$(pwd)/$DEVICE_CODENAME # IMPORTANT ! Fill with your kernel source root directory.
 export LD=ld.lld
-export KERNELNAME=TheOneMemory
 export KBUILD_BUILD_USER=queen # Change with your own name or else.
 IMAGE=$(pwd)/$DEVICE_CODENAME/out/arch/arm64/boot/Image.gz-dtb
 CLANG_VER="$("$ClangPath"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
@@ -48,14 +55,13 @@ command -v java > /dev/null 2>&1
 # Telegram
 export BOT_MSG_URL="https://api.telegram.org/bot$TG_TOKEN/sendMessage"
 
+# Telegram messaging
 tg_post_msg() {
   curl -s -X POST "$BOT_MSG_URL" -d chat_id="$TG_CHAT_ID" \
-  -d "disable_web_page_preview=true" \
-  -d "parse_mode=html" \
-  -d text="$1"
-
+    -d "disable_web_page_preview=true" \
+    -d "parse_mode=html" \
+    -d text="$1"
 }
-
 # Compile
 compile(){
 cd ${KERNEL_ROOTDIR}
@@ -85,16 +91,10 @@ make -j$(nproc) ARCH=arm64 O=out \
 	finerr
 	exit 1
    fi
-  git clone $ANYKERNEL -b eas-12 AnyKernel
+   git clone $ANYKERNEL -b eas-12 AnyKernel
 	cp $IMAGE AnyKernel
 }
-tg_post_msg() {
-	curl -s -X POST "$BOT_MSG_URL" -d chat_id="$TG_CHAT_ID" \
-	-d "disable_web_page_preview=true" \
-	-d "parse_mode=html" \
-	-d text="$1"
-}
-# Push kernel to channel
+# Push kernel to telegram
 function push() {
     cd AnyKernel
     curl -F document="@$ZIP_FINAL.zip" "https://api.telegram.org/bot$TG_TOKEN/sendDocument" \
@@ -103,7 +103,7 @@ function push() {
         -F "parse_mode=Markdown" \
         -F caption="✅ Compile took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>$DEVICE_CODENAME</b> | <b>${KBUILD_COMPILER_STRING}</b>"
 }
-# Fin Error
+# Find Error
 function finerr() {
     curl -s -X POST "https://api.telegram.org/bot$TG_TOKEN/sendMessage" \
         -d chat_id="$TG_CHAT_ID" \
@@ -112,16 +112,15 @@ function finerr() {
         -d text="❌ I'm tired of compiling kernels,And I choose to give up...please give me motivation"
     exit 1
 }
-
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 $KERNELNAME-$DEVICE_CODENAME-"$DATE" . -x ".git*" -x "README.md" -x "*.zip"
+    zip -r9 $KERNELNAME-$VERSION-$VARIANT-"$DATE" . -x ".git*" -x "README.md" -x "*.zip"
 
-    ZIP_FINAL="$KERNELNAME-$DEVICE_CODENAME-$DATE"
+    ZIP_FINAL="$KERNELNAME-$VERSION-$VARIANT-$DATE"
 
     msg "|| Signing Zip ||"
-    tg_post_msg "<code>🗝️ Signing Zip file with AOSP keys..</code>"
+    tg_post_msg "<code>🔑Signing Zip file with AOSP keys...</code>"
 
 	curl -sLo zipsigner-4.0.jar https://github.com/baalajimaestro/AnyKernel3/raw/master/zipsigner-4.0.jar
 	java -jar zipsigner-4.0.jar "$ZIP_FINAL".zip "$ZIP_FINAL"-signed.zip
