@@ -12,11 +12,11 @@ GCCbPath="${MainPath}/GCC32"
 
 # Identity
 KERNELNAME=TheOneMemory
-VERSION=SL
-VARIANT=EAS
+VERSION=PQ
+VARIANT=HMP
 
 # Clone Kernel Source
-git clone --depth=1 https://$USERNAME:$TOKEN@github.com/strongreasons/kernel_asus_sdm660 -b eas-12 $DEVICE_CODENAME
+git clone --depth=1 https://$USERNAME:$TOKEN@github.com/strongreasons/android_kernel_asus_sdm660 $DEVICE_CODENAME
 
 # Clone AOSP Clang
 ClangPath=${MainClangPath}
@@ -40,7 +40,6 @@ export KBUILD_BUILD_USER=queen # Change with your own name or else.
 IMAGE=$(pwd)/$DEVICE_CODENAME/out/arch/arm64/boot/Image.gz-dtb
 CLANG_VER="$("$ClangPath"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
 LLD_VER="$("$ClangPath"/bin/ld.lld --version | head -n 1)"
-export KBUILD_COMPILER_STRING=""
 DATE=$(date +"%F-%S")
 START=$(date +"%s")
 
@@ -86,7 +85,7 @@ make -j$(nproc) ARCH=arm64 O=out \
 	finerr
 	exit 1
    fi
-   git clone $ANYKERNEL -b eas-12 AnyKernel
+   git clone $ANYKERNEL AnyKernel
 	cp $IMAGE AnyKernel
 }
 # Push kernel to telegram
@@ -96,7 +95,7 @@ function push() {
         -F chat_id="$TG_CHAT_ID" \
         -F "disable_web_page_preview=true" \
         -F "parse_mode=html" \
-        -F caption="✅ Compile took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>$DEVICE_CODENAME</b> | <b>${KBUILD_COMPILER_STRING}</b>"
+        -F caption="✅ Compile took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>$DEVICE_CODENAME</b> | <b>${CLANG_VER}</b>"
 }
 # Find Error
 function finerr() {
