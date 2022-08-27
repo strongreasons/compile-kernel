@@ -6,12 +6,9 @@
 # Main
 MainPath="$(pwd)"
 MainClangPath="${MainPath}/clang"
-MainClangZipPath="${MainPath}/clang-zip"
-ClangPath="${MainClangZipPath}"
+ClangPath=${MainClangPath}
 GCCaPath="${MainPath}/GCC64"
 GCCbPath="${MainPath}/GCC32"
-MainZipGCCaPath="${MainPath}/GCC64-zip"
-MainZipGCCbPath="${MainPath}/GCC32-zip"
 
 # Identity
 KERNELNAME=TheOneMemory
@@ -22,12 +19,11 @@ VARIANT=EAS
 git clone --depth=1 https://$USERNAME:$TOKEN@github.com/strongreasons/kernel_asus_sdm660 -b eas-12 $DEVICE_CODENAME
 
 # Clone AOSP Clang
-ClangPath=${MainClangZipPath}
+ClangPath=${MainClangPath}
 [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
 mkdir $ClangPath
 rm -rf $ClangPath/*
-wget -q  https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/master/clang-r458507.tar.gz -O "clang-r458507.tar.gz"
-tar -xf clang-r458507.tar.gz -C $ClangPath
+git clone --depth=1 https://github.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-5696680 $ClangPath
 
 # Clone GCC
 mkdir $GCCaPath
@@ -44,7 +40,7 @@ export KBUILD_BUILD_USER=queen # Change with your own name or else.
 IMAGE=$(pwd)/$DEVICE_CODENAME/out/arch/arm64/boot/Image.gz-dtb
 CLANG_VER="$("$ClangPath"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
 LLD_VER="$("$ClangPath"/bin/ld.lld --version | head -n 1)"
-export KBUILD_COMPILER_STRING="$CLANG_VER with $LLD_VER"
+export KBUILD_COMPILER_STRING=""
 DATE=$(date +"%F-%S")
 START=$(date +"%s")
 
