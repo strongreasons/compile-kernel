@@ -28,14 +28,14 @@ GCCbPath="${MainPath}/GCC32"
 
 # Identity
 KERNELNAME=zen
-VERSION=PQ
-VARIANT=HMP
+VERSION=pq
+VARIANT=hmp
 
 # Clone Kernel Source
 git clone --depth=1 https://$USERNAME:$TOKEN@github.com/strongreasons/android_kernel_asus_sdm660 $DEVICE_CODENAME
 
-# Check Kernel Version
-LINUXVER=$(make kernelversion)
+# Show manufacturer info
+MANUFACTURERINFO="ASUSTek Computer Inc."
 
 # Set a commit head
 COMMIT_HEAD=$(git log --pretty=format:'%s' -n1)
@@ -118,19 +118,24 @@ function push() {
         -F "disable_web_page_preview=true" \
         -F "parse_mode=html" \
         -F caption="✅<b>Build Done</b>
-        -<code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s).. </code>
+        - <code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s)... </code>
+
         <b>📅 Build Date: </b>
         -<code>$DATE</code>
+
         <b>🐧 Linux Version: </b>
         -<code>$LINUXVER</code>
+
          <b>💿 Compiler: </b>
         -<code>$CLANG_VER</code>
+
         <b>📱 Device: </b>
-        -<code>$DEVICE ($MANUFACTURERINFO)</code>
+        -<code>$DEVICE_CODENAME x ($MANUFACTURERINFO)</code>
+
         <b>🆑 Changelog: </b>
-        -<code>$COMMIT_HEAD</code>
+        - <code>$COMMIT_HEAD</code>
         <b></b>
-        #EWprjkt"
+        #TIKTOD #MEMANG #GOBLOK"
 }
 # Find Error
 function finerr() {
