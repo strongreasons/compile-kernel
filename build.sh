@@ -138,7 +138,7 @@ function push() {
         - <code>$COMMIT_HEAD</code>
         <b></b>
         #TIKTOD #MEMANG #KUNTUL"
-
+}
 # Find Error
 function finerr() {
     curl -s -X POST "https://api.telegram.org/bot$TG_TOKEN/sendMessage" \
