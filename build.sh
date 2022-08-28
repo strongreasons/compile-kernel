@@ -3,6 +3,22 @@
 # Copyright (C) 2022 Kneba <abenkenary3@gmail.com>
 #
 
+# Function to show an informational message
+msg() {
+	echo
+    echo -e "\e[1;32m$*\e[0m"
+    echo
+}
+
+err() {
+    echo -e "\e[1;41m$*\e[0m"
+}
+
+cdir() {
+	cd "$1" 2>/dev/null || \
+		err "The directory $1 doesn't exists !"
+}
+
 # Main
 MainPath="$(pwd)"
 MainClangPath="${MainPath}/clang"
@@ -17,6 +33,12 @@ VARIANT=HMP
 
 # Clone Kernel Source
 git clone --depth=1 https://$USERNAME:$TOKEN@github.com/strongreasons/android_kernel_asus_sdm660 $DEVICE_CODENAME
+
+# Check Kernel Version
+LINUXVER=$(make kernelversion)
+
+# Set a commit head
+COMMIT_HEAD=$(git log --pretty=format:'%s' -n1)
 
 # Clone AOSP Clang
 ClangPath=${MainClangPath}
@@ -95,7 +117,20 @@ function push() {
         -F chat_id="$TG_CHAT_ID" \
         -F "disable_web_page_preview=true" \
         -F "parse_mode=html" \
-        -F caption="✅ Compile took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>$DEVICE_CODENAME</b> | <b>${CLANG_VER}</b>"
+        -F caption="✅<b>Build Done</b>
+        -<code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s).. </code>
+        <b>📅 Build Date: </b>
+        -<code>$DATE</code>
+        <b>🐧 Linux Version: </b>
+        -<code>$LINUXVER</code>
+         <b>💿 Compiler: </b>
+        -<code>$CLANG_VER</code>
+        <b>📱 Device: </b>
+        -<code>$DEVICE ($MANUFACTURERINFO)</code>
+        <b>🆑 Changelog: </b>
+        -<code>$COMMIT_HEAD</code>
+        <b></b>
+        #EWprjkt"
 }
 # Find Error
 function finerr() {
@@ -103,7 +138,7 @@ function finerr() {
         -d chat_id="$TG_CHAT_ID" \
         -d "disable_web_page_preview=true" \
         -d "parse_mode=markdown" \
-        -d text="❌ I'm tired of compiling kernels,And I choose to give up...please give me motivation"
+        -d text="❌ I'm tired of compiling kernels, lord @TKTDS GOBLOK gan...please give lord @TKTDS motivation"
     exit 1
 }
 # Zipping
