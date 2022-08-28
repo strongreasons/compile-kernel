@@ -11,7 +11,7 @@ GCCaPath="${MainPath}/GCC64"
 GCCbPath="${MainPath}/GCC32"
 
 # Identity
-KERNELNAME=TheOneMemory
+KERNELNAME=zen
 VERSION=PQ
 VARIANT=HMP
 
@@ -85,7 +85,7 @@ make -j$(nproc) ARCH=arm64 O=out \
 	finerr
 	exit 1
    fi
-   git clone $ANYKERNEL AnyKernel
+   git clone $ANYKERNEL -b master AnyKernel
 	cp $IMAGE AnyKernel
 }
 # Push kernel to telegram
