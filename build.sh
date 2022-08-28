@@ -3,6 +3,22 @@
 # Copyright (C) 2022 Kneba <abenkenary3@gmail.com>
 #
 
+# Function to show an informational message
+msg() {
+	echo
+    echo -e "\e[1;32m$*\e[0m"
+    echo
+}
+
+err() {
+    echo -e "\e[1;41m$*\e[0m"
+}
+
+cdir() {
+	cd "$1" 2>/dev/null || \
+		err "The directory $1 doesn't exists !"
+}
+
 # Main
 MainPath="$(pwd)"
 MainClangPath="${MainPath}/clang"
@@ -17,6 +33,9 @@ MainZipGCCbPath="${MainPath}/GCC32-zip"
 KERNELNAME=TheOneMemory
 VERSION=SL
 VARIANT=EAS
+
+# Show manufacturer info
+MANUFACTURERINFO="ASUSTek Computer Inc."
 
 # Clone Kernel Source
 git clone --depth=1 https://$USERNAME:$TOKEN@github.com/strongreasons/kernel_asus_sdm660 -b eas-12 $DEVICE_CODENAME
@@ -100,8 +119,26 @@ function push() {
         -F chat_id="$TG_CHAT_ID" \
         -F "disable_web_page_preview=true" \
         -F "parse_mode=html" \
-        -F caption="✅ Compile took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>$DEVICE_CODENAME</b> | <b>${KBUILD_COMPILER_STRING}</b>"
-}
+        -F caption="✅<b>Build Done</b>
+        - <code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s)... </code>
+
+        <b>📅 Build Date: </b>
+        -<code>$DATE</code>
+
+        <b>🐧 Linux Version: </b>
+        -<code>4.4.302</code>
+
+         <b>💿 Compiler: </b>
+        -<code>$KBUILD_COMPILER_STRING</code>
+
+        <b>📱 Device: </b>
+        -<code>$DEVICE_CODENAME($MANUFACTURERINFO)</code>
+
+        <b>🆑 Changelog: </b>
+        - <code>$COMMIT_HEAD</code>
+        <b></b>
+        #TIKTOD #MEMANG #KUNTUL"
+
 # Find Error
 function finerr() {
     curl -s -X POST "https://api.telegram.org/bot$TG_TOKEN/sendMessage" \
