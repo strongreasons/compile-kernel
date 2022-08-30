@@ -30,16 +30,16 @@ MainZipGCCaPath="${MainPath}/GCC64-zip"
 MainZipGCCbPath="${MainPath}/GCC32-zip"
 
 # Identity
-KERNELNAME=TheOneMemory
 VERSION=SL
+KERNELNAME=TheOneMemory
+CODENAME=Onyx
 VARIANT=EAS
-CODENAME=Hayzel
 
 # Show manufacturer info
 MANUFACTURERINFO="ASUSTek Computer Inc."
 
 # Clone Kernel Source
-git clone --depth=1 https://$USERNAME:$TOKEN@github.com/strongreasons/kernel_asus_sdm660 -b eas-12 $DEVICE_CODENAME
+git clone --depth=1 https://$USERNAME:$TOKEN@github.com/strongreasons/kernel_asus_sdm660 -b eas-12-oc $DEVICE_CODENAME
 
 # Clone AOSP Clang
 ClangPath=${MainClangZipPath}
@@ -120,7 +120,7 @@ function push() {
         -F chat_id="$TG_CHAT_ID" \
         -F "disable_web_page_preview=true" \
         -F "parse_mode=html" \
-        -F caption="✅<b>Build Done</b>
+        -F caption="🔐<b>Build Done</b>
         - <code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s)... </code>
 
         <b>📅 Build Date: </b>
@@ -159,9 +159,9 @@ function zipping() {
     msg "|| Signing Zip ||"
     tg_post_msg "<code>🔑 Signing Zip file with AOSP keys..</code>"
 
-	curl -sLo zipsigner-4.0.jar https://github.com/baalajimaestro/AnyKernel3/raw/master/zipsigner-4.0.jar
-	java -jar zipsigner-4.0.jar "$ZIP_FINAL".zip "$ZIP_FINAL"-signed.zip
-	ZIP_FINAL="$ZIP_FINAL-signed"
+    curl -sLo zipsigner-3.0.jar https://github.com/Magisk-Modules-Repo/zipsigner/raw/master/bin/zipsigner-3.0-dexed.jar
+    java -jar zipsigner-3.0.jar "$ZIP_FINAL".zip "$ZIP_FINAL"-signed.zip
+    ZIP_FINAL="$ZIP_FINAL-signed"
     cd ..
 }
 compile
