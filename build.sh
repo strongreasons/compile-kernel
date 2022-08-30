@@ -33,6 +33,7 @@ MainZipGCCbPath="${MainPath}/GCC32-zip"
 KERNELNAME=TheOneMemory
 VERSION=SL
 VARIANT=EAS
+CODENAME=Hayzel
 
 # Show manufacturer info
 MANUFACTURERINFO="ASUSTek Computer Inc."
@@ -151,9 +152,9 @@ function finerr() {
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 [$VERSION]$KERNELNAME-$VARIANT-"$DATE" . -x ".git*" -x "README.md" -x "*.zip"
+    zip -r9 [$VERSION]$KERNELNAME-$CODENAME-$VARIANT-"$DATE" . -x ".git*" -x "README.md" -x "*.zip"
 
-    ZIP_FINAL="[$VERSION]$KERNELNAME-$VARIANT-$DATE"
+    ZIP_FINAL="[$VERSION]$KERNELNAME-$CODENAME-$VARIANT-$DATE"
 
     msg "|| Signing Zip ||"
     tg_post_msg "<code>🔑 Signing Zip file with AOSP keys..</code>"
