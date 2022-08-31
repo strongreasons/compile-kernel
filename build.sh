@@ -28,8 +28,8 @@ GCCbPath="${MainPath}/GCC32"
 
 # Identity
 KERNELNAME=zen
-VERSION=pq
-VARIANT=hmp
+VERSION=PQ
+VARIANT=HMP
 
 # Clone Kernel Source
 git clone --depth=1 https://$USERNAME:$TOKEN@github.com/strongreasons/android_kernel_asus_sdm660 $DEVICE_CODENAME
@@ -135,7 +135,7 @@ function push() {
         <b>🆑 Changelog: </b>
         - <code>$COMMIT_HEAD</code>
         <b></b>
-        #TIKTOD #MEMANG #GOBLOK"
+        #Linux #Stable #Archives"
 }
 # Find Error
 function finerr() {
@@ -149,9 +149,9 @@ function finerr() {
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 [$VERSION]$KERNELNAME-$VARIANT-"$DATE" . -x ".git*" -x "README.md" -x "*.zip"
+    zip -r9 $KERNELNAME-Kernel-"$DATE" . -x ".git*" -x "README.md" -x "*.zip"
 
-    ZIP_FINAL="[$VERSION]$KERNELNAME-$VARIANT-$DATE"
+    ZIP_FINAL="$KERNELNAME-Kernel-$DATE"
 
     msg "|| Signing Zip ||"
     tg_post_msg "<code>🔑 Signing Zip file with AOSP keys..</code>"
