@@ -124,7 +124,7 @@ function push() {
         -<code>$DATE</code>
 
         <b>🐧 Linux Version: </b>
-        -<code>4.4.269</code>
+        -<code>4.4.280</code>
 
          <b>💿 Compiler: </b>
         -<code>$CLANG_VER</code>
@@ -149,9 +149,9 @@ function finerr() {
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 $KERNELNAME-Kernel-"$DATE" . -x ".git*" -x "README.md" -x "*.zip"
+    zip -r9 $KERNELNAME+-kernel-X00TD-"$DATE" . -x ".git*" -x "README.md" -x "*.zip"
 
-    ZIP_FINAL="$KERNELNAME-Kernel-$DATE"
+    ZIP_FINAL="$KERNELNAME+-kernel-X00TD-$DATE"
 
     msg "|| Signing Zip ||"
     tg_post_msg "<code>🔑 Signing Zip file with AOSP keys..</code>"
