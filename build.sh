@@ -124,7 +124,7 @@ function push() {
         -<code>$DATE</code>
 
         <b>🐧 Linux Version: </b>
-        -<code>4.4.292</code>
+        -<code>4.4.302</code>
 
          <b>💿 Compiler: </b>
         -<code>$CLANG_VER</code>
@@ -135,7 +135,7 @@ function push() {
         <b>🆑 Changelog: </b>
         - <code>$COMMIT_HEAD</code>
         <b></b>
-        #Linux #Stable #Archives #P #Q"
+        #Linux #Stable #Archives #PQ"
 }
 # Find Error
 function finerr() {
