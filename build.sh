@@ -30,9 +30,9 @@ MainZipGCCaPath="${MainPath}/GCC64-zip"
 MainZipGCCbPath="${MainPath}/GCC32-zip"
 
 # Identity
-VERSION=TiramSaus
+VERSION=SausTiram
 KERNELNAME=TheOneMemory
-CODENAME=Onyx
+CODENAME=Hayzel
 VARIANT=EAS
 
 # Show manufacturer info
