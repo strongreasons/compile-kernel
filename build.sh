@@ -30,16 +30,16 @@ MainZipGCCaPath="${MainPath}/GCC64-zip"
 MainZipGCCbPath="${MainPath}/GCC32-zip"
 
 # Identity
-VERSION=SausTiram
+VERSION=Q
 KERNELNAME=TheOneMemory
 CODENAME=Hayzel
-VARIANT=EAS
+VARIANT=HMP
 
 # Show manufacturer info
 MANUFACTURERINFO="ASUSTek Computer Inc."
 
 # Clone Kernel Source
-git clone --depth=1 https://$USERNAME:$TOKEN@github.com/strongreasons/kernel_asus_sdm660 -b eas-13 $DEVICE_CODENAME
+git clone --depth=1 https://$USERNAME:$TOKEN@github.com/strongreasons/kernel_asus_sdm660 -b hmp $DEVICE_CODENAME
 
 # Clone AOSP Clang
 ClangPath=${MainClangZipPath}
@@ -52,9 +52,9 @@ tar -xf clang-r458507.tar.gz -C $ClangPath
 # Clone GCC
 mkdir $GCCaPath
 mkdir $GCCbPath
-wget -q https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+archive/refs/tags/android-12.1.0_r27.tar.gz -O "gcc64.tar.gz"
+wget -q https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+archive/refs/tags/android-12.1.0_r16.tar.gz -O "gcc64.tar.gz"
 tar -xf gcc64.tar.gz -C $GCCaPath
-wget -q https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/+archive/refs/tags/android-12.1.0_r27.tar.gz -O "gcc32.tar.gz"
+wget -q https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/+archive/refs/tags/android-12.1.0_r16.tar.gz -O "gcc32.tar.gz"
 tar -xf gcc32.tar.gz -C $GCCbPath
 
 # Prepare
@@ -110,7 +110,7 @@ make -j$(nproc) ARCH=arm64 O=out \
 	finerr
 	exit 1
    fi
-   git clone $ANYKERNEL -b eas-12 AnyKernel
+   git clone $ANYKERNEL -b hmp-12 AnyKernel
 	cp $IMAGE AnyKernel
 }
 # Push kernel to telegram
@@ -127,7 +127,7 @@ function push() {
         -<code>$DATE</code>
 
         <b>🐧 Linux Version: </b>
-        -<code>4.4.302</code>
+        -<code>4.4.205</code>
 
          <b>💿 Compiler: </b>
         -<code>$KBUILD_COMPILER_STRING</code>
@@ -138,7 +138,7 @@ function push() {
         <b>🆑 Changelog: </b>
         - <code>$COMMIT_HEAD</code>
         <b></b>
-        #The #One #Memory"
+        #TheOneMemory #Hayzel #X00TD"
 }
 # Find Error
 function finerr() {
