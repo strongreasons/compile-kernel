@@ -33,7 +33,7 @@ MainZipGCCbPath="${MainPath}/GCC32-zip"
 VERSION=RSLT
 KERNELNAME=TheOneMemory
 CODENAME=Hayzel
-VARIANT=HMP
+VARIANT=EAS
 
 # Show manufacturer info
 MANUFACTURERINFO="ASUSTek Computer Inc."
