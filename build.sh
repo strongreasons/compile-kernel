@@ -30,7 +30,7 @@ MainZipGCCaPath="${MainPath}/GCC64-zip"
 MainZipGCCbPath="${MainPath}/GCC32-zip"
 
 # Identity
-VERSION=Q
+VERSION=RSLT
 KERNELNAME=TheOneMemory
 CODENAME=Hayzel
 VARIANT=HMP
@@ -39,7 +39,7 @@ VARIANT=HMP
 MANUFACTURERINFO="ASUSTek Computer Inc."
 
 # Clone Kernel Source
-git clone --depth=1 https://$USERNAME:$TOKEN@github.com/strongreasons/kernel_asus_sdm660 -b hmp $DEVICE_CODENAME
+git clone --depth=1 https://$USERNAME:$TOKEN@github.com/strongreasons/kernel_asus_sdm660 -b eas-13 $DEVICE_CODENAME
 
 # Clone AOSP Clang
 ClangPath=${MainClangZipPath}
@@ -110,7 +110,7 @@ make -j$(nproc) ARCH=arm64 O=out \
 	finerr
 	exit 1
    fi
-   git clone $ANYKERNEL -b hmp-12 AnyKernel
+   git clone $ANYKERNEL -b eas-12 AnyKernel
 	cp $IMAGE AnyKernel
 }
 # Push kernel to telegram
@@ -127,7 +127,7 @@ function push() {
         -<code>$DATE</code>
 
         <b>🐧 Linux Version: </b>
-        -<code>4.4.205</code>
+        -<code>4.4.302</code>
 
          <b>💿 Compiler: </b>
         -<code>$KBUILD_COMPILER_STRING</code>
