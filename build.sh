@@ -107,7 +107,7 @@ make -j$(nproc) ARCH=arm64 O=out \
 	finerr
 	exit 1
    fi
-   git clone $ANYKERNEL -b master AnyKernel
+   git clone $ANYKERNEL -b hmp-old AnyKernel
 	cp $IMAGE AnyKernel
 }
 # Push kernel to telegram
