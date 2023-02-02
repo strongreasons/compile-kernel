@@ -27,8 +27,8 @@ GCCaPath="${MainPath}/GCC64"
 GCCbPath="${MainPath}/GCC32"
 
 # Identity
-KERNELNAME=zen
-VERSION=PQ
+KERNELNAME=NestleCerelac
+VERSION=PieQ
 VARIANT=HMP
 
 # Clone Kernel Source
