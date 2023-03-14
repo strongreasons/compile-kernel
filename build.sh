@@ -30,7 +30,7 @@ MainZipGCCaPath="${MainPath}/GCC64-zip"
 MainZipGCCbPath="${MainPath}/GCC32-zip"
 
 # Identity
-VERSION=RSLT
+VERSION=12.13
 KERNELNAME=TheOneMemory
 CODENAME=Hayzel
 VARIANT=EAS
@@ -39,7 +39,7 @@ VARIANT=EAS
 MANUFACTURERINFO="ASUSTek Computer Inc."
 
 # Clone Kernel Source
-git clone --depth=1 https://$USERNAME:$TOKEN@github.com/strongreasons/kernel_asus_sdm660 -b eas-13 $DEVICE_CODENAME
+git clone --depth=1 https://$USERNAME:$TOKEN@github.com/strongreasons/kernel_asus_eas $DEVICE_CODENAME
 
 # Clone AOSP Clang
 ClangPath=${MainClangZipPath}
