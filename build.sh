@@ -39,14 +39,14 @@ VARIANT=EAS
 MANUFACTURERINFO="ASUSTek Computer Inc."
 
 # Clone Kernel Source
-git clone --depth=1 https://$USERNAME:$TOKEN@github.com/strongreasons/kernel_asus_eas $DEVICE_CODENAME
+git clone --depth=1 https://$USERNAME:$TOKEN@github.com/$USERNAME/kernel_asus_eas $DEVICE_CODENAME
 
 # Clone AOSP Clang
 ClangPath=${MainClangZipPath}
 [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
 mkdir $ClangPath
 rm -rf $ClangPath/*
-wget -q  https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/master/clang-r458507.tar.gz -O "clang-r458507.tar.gz"
+wget -q https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/master/clang-r458507.tar.gz -O "clang-r458507.tar.gz"
 tar -xf clang-r458507.tar.gz -C $ClangPath
 
 # Clone GCC
@@ -138,7 +138,7 @@ function push() {
         <b>🆑 Changelog: </b>
         - <code>$COMMIT_HEAD</code>
         <b></b>
-        #TheOneMemory #Hayzel #X00TD"
+        #TheOneMemory #Hayzel #EAS"
 }
 # Find Error
 function finerr() {
