@@ -27,7 +27,7 @@ GCCaPath="${MainPath}/GCC64"
 GCCbPath="${MainPath}/GCC32"
 
 # Identity
-KERNELNAME=NestleCerelac
+KERNELNAME=ElectroWizard
 VERSION=PieQ
 VARIANT=HMP
 
