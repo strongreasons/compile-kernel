@@ -81,7 +81,7 @@ tg_post_msg() {
     -d "parse_mode=html" \
     -d text="$1"
 }
-# Compile
+# Compiler
 compile(){
 cd ${KERNEL_ROOTDIR}
 export HASH_HEAD=$(git rev-parse --short HEAD)
