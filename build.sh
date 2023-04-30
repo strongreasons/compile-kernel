@@ -32,14 +32,14 @@ MainZipGCCbPath="${MainPath}/GCC32-zip"
 # Identity
 VERSION=12x13
 KERNELNAME=TheOneMemory
-CODENAME=Hayzel
-VARIANT=EAS
+CODENAME=Onyx
+VARIANT=HMP
 
 # Show manufacturer info
 MANUFACTURERINFO="ASUSTek Computer Inc."
 
 # Clone Kernel Source
-git clone --depth=1 https://$USERNAME:$TOKEN@github.com/strongreasons/kernel_asus_eas $DEVICE_CODENAME
+git clone --depth=1 https://$USERNAME:$TOKEN@github.com/strongreasons/android_kernel_asus_sdm660 -b 13 $DEVICE_CODENAME
 
 # Clone AOSP Clang
 ClangPath=${MainClangZipPath}
@@ -110,7 +110,7 @@ make -j$(nproc) ARCH=arm64 O=out \
 	finerr
 	exit 1
    fi
-   git clone $ANYKERNEL -b eas-12 AnyKernel
+   git clone $ANYKERNEL -b hmp-12 AnyKernel
 	cp $IMAGE AnyKernel
 }
 # Push kernel to telegram
