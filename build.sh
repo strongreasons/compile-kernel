@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright (C) 2022 Kneba <abenkenary3@gmail.com>
+# Copyright (C) 2023 Kneba <abenkenary3@gmail.com>
 #
 
 # Function to show an informational message
