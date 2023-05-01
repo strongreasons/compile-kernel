@@ -105,3 +105,4 @@
           curl https://raw.githubusercontent.com/<YOUR_GITHUB_USERNAME>/compile-kernel/master/build.sh | bash
 
 ```
+
