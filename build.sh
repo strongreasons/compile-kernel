@@ -33,21 +33,21 @@ MainZipGCCbPath="${MainPath}/GCC32-zip"
 VERSION=12x13
 KERNELNAME=TheOneMemory
 CODENAME=Hayzel
-VARIANT=EAS
+VARIANT=HMP
 
 # Show manufacturer info
 MANUFACTURERINFO="ASUSTek Computer Inc."
 
 # Clone Kernel Source
-git clone --depth=1 https://$USERNAME:$TOKEN@github.com/strongreasons/kernel_asus_eas $DEVICE_CODENAME
+git clone --depth=1 https://$USERNAME:$TOKEN@github.com/strongreasons/android_kernel_asus_sdm660 -b 13 $DEVICE_CODENAME
 
 # Clone AOSP Clang
 ClangPath=${MainClangZipPath}
 [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
 mkdir $ClangPath
 rm -rf $ClangPath/*
-wget -q https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/master/clang-r450784e.tar.gz -O "clang-r450784e.tar.gz"
-tar -xf clang-r450784e.tar.gz -C $ClangPath
+wget -q https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/master/clang-r458507.tar.gz -O "clang-r458507.tar.gz"
+tar -xf clang-r458507.tar.gz -C $ClangPath
 
 # Clone GCC
 mkdir $GCCaPath
@@ -110,7 +110,7 @@ make -j$(nproc) ARCH=arm64 O=out \
 	finerr
 	exit 1
    fi
-   git clone $ANYKERNEL -b eas-12 AnyKernel
+   git clone $ANYKERNEL -b hmp-12 AnyKernel
 	cp $IMAGE AnyKernel
 }
 # Push kernel to telegram
