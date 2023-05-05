@@ -19,7 +19,7 @@ cdir() {
 		err "The directory $1 doesn't exists !"
 }
 
-# Main
+# Main1
 MainPath="$(pwd)"
 MainClangPath="${MainPath}/clang"
 MainClangZipPath="${MainPath}/clang-zip"
