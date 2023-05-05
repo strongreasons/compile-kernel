@@ -33,13 +33,13 @@ MainZipGCCbPath="${MainPath}/GCC32-zip"
 VERSION=12x13
 KERNELNAME=TheOneMemory
 CODENAME=Hayzel
-VARIANT=EAS
+VARIANT=HMP
 
 # Show manufacturer info
 MANUFACTURERINFO="ASUSTek Computer Inc."
 
 # Clone Kernel Source
-git clone --depth=1 https://$USERNAME:$TOKEN@github.com/strongreasons/android_kernel_asus_sdm660 -b 13-eas $DEVICE_CODENAME
+git clone --depth=1 https://$USERNAME:$TOKEN@github.com/strongreasons/android_kernel_asus_sdm660 -b 13 $DEVICE_CODENAME
 
 # Clone AOSP Clang
 ClangPath=${MainClangZipPath}
@@ -138,7 +138,7 @@ function push() {
         <b>🆑 Changelog: </b>
         - <code>$COMMIT_HEAD</code>
         <b></b>
-        #TheOneMemory #Hayzel #EAS"
+        #TheOneMemory #Hayzel #HMP"
 }
 # Find Error
 function finerr() {
