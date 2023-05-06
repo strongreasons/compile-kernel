@@ -30,7 +30,7 @@ MainZipGCCaPath="${MainPath}/GCC64-zip"
 MainZipGCCbPath="${MainPath}/GCC32-zip"
 
 # Identity
-VERSION=12x13
+VERSION=9x13
 KERNELNAME=TheOneMemory
 CODENAME=Hayzel
 VARIANT=HMP
