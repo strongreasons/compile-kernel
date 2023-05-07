@@ -46,7 +46,8 @@ ClangPath=${MainClangZipPath}
 [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
 mkdir $ClangPath
 rm -rf $ClangPath/*
-git clone --depth=1 https://gitlab.com/ImSurajxD/clang-r450784d -b master $ClangPath
+git clone --depth=1 https://github.com/ThankYouMario/proprietary_vendor_qcom_sdclang $ClangPath
+#git clone --depth=1 https://gitlab.com/ImSurajxD/clang-r450784d -b master $ClangPath
 #wget -q https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/master/clang-r458507.tar.gz -O "clang-r458507.tar.gz"
 #tar -xf clang-r458507.tar.gz -C $ClangPath
 
@@ -64,8 +65,8 @@ export LD=ld.lld
 export KBUILD_BUILD_USER=queen # Change with your own name or else.
 IMAGE=$(pwd)/$DEVICE_CODENAME/out/arch/arm64/boot/Image.gz-dtb
 CLANG_VER="$("$ClangPath"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
-LLD_VER="$("$ClangPath"/bin/ld.lld --version | head -n 1)"
-export KBUILD_COMPILER_STRING="$CLANG_VER with $LLD_VER"
+#LLD_VER="$("$ClangPath"/bin/ld.lld --version | head -n 1)"
+export KBUILD_COMPILER_STRING="$CLANG_VER x GCC 4.9"
 DATE=$(date +"%F-%S")
 START=$(date +"%s")
 
