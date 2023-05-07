@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Setup env
-        run: pacman -Syu --needed --noconfirm wget base-devel xmlto inetutils bc cpio graphviz imagemagick git python3 zip 
+        run: pacman -Sy --noconfirm git bc inetutils python3 flex bison libc++ libxml2 python-pip zip wget cpio jdk-openjdk tzdata && python3 -m pip install networkx && pip3 install --upgrade gupload
       - name: Build Kernel
         env:
           TOKEN: ${{ secrets.TOKEN }}
@@ -26,5 +26,5 @@ jobs:
         run: |
           export token=${TG_TOKEN}
           export git=${TOKEN}
-          export TZ=Asia/Shanghai
+          export TZ=Europe/Moscow
           bash build.sh
