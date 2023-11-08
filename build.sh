@@ -52,7 +52,7 @@ rm -rf $ClangPath/*
 
 #git clone --depth=1 https://gitlab.com/ImSurajxD/clang-r450784d -b master $ClangPath
 wget -q https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/master/clang-r487747c.tar.gz -O "clang-r487747c.tar.gz"
-#tar -xf clang-r487747c.tar.gz -C $ClangPath
+tar -xf clang-r487747c.tar.gz -C $ClangPath
 
 # Clone GCC
 mkdir $GCCaPath
