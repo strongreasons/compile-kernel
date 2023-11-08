@@ -30,16 +30,19 @@ MainZipGCCaPath="${MainPath}/GCC64-zip"
 MainZipGCCbPath="${MainPath}/GCC32-zip"
 
 # Identity
-VERSION=9x13
 KERNELNAME=TheOneMemory
 CODENAME=Hayzel
 VARIANT=HMP
+BASE=CLO
+
+# The name of the Kernel, to name the ZIP
+ZIPNAME="$KERNELNAME-$CODENAME-$VARIANT-$BASE"
 
 # Show manufacturer info
 MANUFACTURERINFO="ASUSTek Computer Inc."
 
 # Clone Kernel Source
-git clone --depth=1 https://$USERNAME:$TOKEN@github.com/strongreasons/android_kernel_asus_sdm660 -b 13 $DEVICE_CODENAME
+git clone --recursive https://$USERNAME:$TOKEN@github.com/strongreasons/android_kernel_asus_sdm636 $DEVICE_CODENAME
 
 # Clone AOSP Clang
 ClangPath=${MainClangZipPath}
@@ -47,9 +50,9 @@ ClangPath=${MainClangZipPath}
 mkdir $ClangPath
 rm -rf $ClangPath/*
 
-git clone --depth=1 https://gitlab.com/ImSurajxD/clang-r450784d -b master $ClangPath
-#wget -q https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/master/clang-r458507.tar.gz -O "clang-r458507.tar.gz"
-#tar -xf clang-r458507.tar.gz -C $ClangPath
+#git clone --depth=1 https://gitlab.com/ImSurajxD/clang-r450784d -b master $ClangPath
+wget -q https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/master/clang-r487747c.tar.gz -O "clang-r487747c.tar.gz"
+#tar -xf clang-r487747c.tar.gz -C $ClangPath
 
 # Clone GCC
 mkdir $GCCaPath
@@ -66,7 +69,7 @@ export KBUILD_BUILD_USER=queen # Change with your own name or else.
 IMAGE=$(pwd)/$DEVICE_CODENAME/out/arch/arm64/boot/Image.gz-dtb
 CLANG_VER="$("$ClangPath"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
 LLD_VER="$("$ClangPath"/bin/ld.lld --version | head -n 1)"
-export KBUILD_COMPILER_STRING="$CLANG_VER with $LLD_VER"
+export KBUILD_COMPILER_STRING="$CLANG_VER"
 DATE=$(date +"%F-%S")
 START=$(date +"%s")
 
@@ -112,7 +115,7 @@ make -j$(nproc) ARCH=arm64 O=out \
 	finerr
 	exit 1
    fi
-   git clone $ANYKERNEL -b hmp-12 AnyKernel
+   git clone $ANYKERNEL -b hmp AnyKernel
 	cp $IMAGE AnyKernel
 }
 # Push kernel to telegram
@@ -140,7 +143,7 @@ function push() {
         <b>🆑 Changelog: </b>
         - <code>$COMMIT_HEAD</code>
         <b></b>
-        #TheOneMemory #Hayzel #HMP"
+        #$KERNELNAME #$CODENAME #$VARIANT"
 }
 # Find Error
 function finerr() {
@@ -154,17 +157,46 @@ function finerr() {
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 [$VERSION]$KERNELNAME-$CODENAME-$VARIANT-"$DATE" . -x ".git*" -x "README.md" -x "*.zip"
+	cp -af $KERNEL_DIR/init.$CODENAME.Spectrum.rc spectrum/init.spectrum.rc && sed -i "s/persist.spectrum.kernel.*/persist.spectrum.kernel TheOneMemory/g" spectrum/init.spectrum.rc
+	cp -af $KERNEL_DIR/changelog META-INF/com/google/android/aroma/changelog.txt
+	cp -af anykernel-real.sh anykernel.sh
+	sed -i "s/kernel.string=.*/kernel.string=$KERNELNAME/g" anykernel.sh
+	sed -i "s/kernel.type=.*/kernel.type=$VARIANT/g" anykernel.sh
+	sed -i "s/kernel.for=.*/kernel.for=$CODENAME/g" anykernel.sh
+	sed -i "s/kernel.compiler=.*/kernel.compiler=$KBUILD_COMPILER_STRING/g" anykernel.sh
+	sed -i "s/kernel.made=.*/kernel.made=dotkit @fakedotkit/g" anykernel.sh
+	sed -i "s/kernel.version=.*/kernel.version=$KERVER/g" anykernel.sh
+	sed -i "s/message.word=.*/message.word=Appreciate your efforts for choosing TheOneMemory kernel./g" anykernel.sh
+	sed -i "s/build.date=.*/build.date=$DATE/g" anykernel.sh
+	sed -i "s/build.type=.*/build.type=$BASE/g" anykernel.sh
+	sed -i "s/supported.versions=.*/supported.versions=9-13/g" anykernel.sh
+	sed -i "s/device.name1=.*/device.name1=X00TD/g" anykernel.sh
+	sed -i "s/device.name2=.*/device.name2=X00T/g" anykernel.sh
+	sed -i "s/device.name3=.*/device.name3=Zenfone Max Pro M1 (X00TD)/g" anykernel.sh
+	sed -i "s/device.name4=.*/device.name4=ASUS_X00TD/g" anykernel.sh
+	sed -i "s/device.name5=.*/device.name5=ASUS_X00T/g" anykernel.sh
+	sed -i "s/X00TD=.*/X00TD=1/g" anykernel.sh
+	cd META-INF/com/google/android
+	sed -i "s/KNAME/$KERNELNAME/g" aroma-config
+	sed -i "s/KVER/$KERVER/g" aroma-config
+	sed -i "s/KAUTHOR/dotkit @fakedotkit/g" aroma-config
+	sed -i "s/KDEVICE/Zenfone Max Pro M1/g" aroma-config
+	sed -i "s/KBDATE/$DATE/g" aroma-config
+	sed -i "s/KVARIANT/$VARIANT/g" aroma-config
+	cd ../../../..
 
-    ZIP_FINAL="[$VERSION]$KERNELNAME-$CODENAME-$VARIANT-$DATE"
+	zip -r9 $ZIPNAME-"$DATE" * -x .git README.md anykernel-real.sh .gitignore zipsigner* "*.zip"
+ 
+	## Prepare a final zip variable
+	ZIP_FINAL="$ZIPNAME-$DATE"
 
-    msg "|| Signing Zip ||"
-    tg_post_msg "<code>🔑 Signing Zip file with AOSP keys..</code>"
+	msg "|| Signing Zip ||"
+	tg_post_msg "<code>🔑 Signing Zip file with AOSP keys..</code>"
 
-    curl -sLo zipsigner-3.0.jar https://github.com/Magisk-Modules-Repo/zipsigner/raw/master/bin/zipsigner-3.0-dexed.jar
-    java -jar zipsigner-3.0.jar "$ZIP_FINAL".zip "$ZIP_FINAL"-signed.zip
-    ZIP_FINAL="$ZIP_FINAL-signed"
-    cd ..
+	curl -sLo zipsigner-3.0.jar https://github.com/Magisk-Modules-Repo/zipsigner/raw/master/bin/zipsigner-3.0-dexed.jar
+	java -jar zipsigner-3.0.jar "$ZIP_FINAL".zip "$ZIP_FINAL"-signed.zip
+	ZIP_FINAL="$ZIP_FINAL-signed"
+	cd ..
 }
 compile
 zipping
