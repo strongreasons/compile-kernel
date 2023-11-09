@@ -118,33 +118,6 @@ make -j$(nproc) ARCH=arm64 O=out \
    git clone $ANYKERNEL -b hmp AnyKernel
 	cp $IMAGE AnyKernel
 }
-# Push kernel to telegram
-function push() {
-    cd AnyKernel
-    curl -F document="@$ZIP_FINAL.zip" "https://api.telegram.org/bot$TG_TOKEN/sendDocument" \
-        -F chat_id="$TG_CHAT_ID" \
-        -F "disable_web_page_preview=true" \
-        -F "parse_mode=html" \
-        -F caption="🔐<b>Build Done</b>
-        - <code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s)... </code>
-
-        <b>📅 Build Date: </b>
-        -<code>$DATE</code>
-
-        <b>🐧 Linux Version: </b>
-        -<code>4.4.302</code>
-
-         <b>💿 Compiler: </b>
-        -<code>$KBUILD_COMPILER_STRING</code>
-
-        <b>📱 Device: </b>
-        -<code>$DEVICE_CODENAME($MANUFACTURERINFO)</code>
-
-        <b>🆑 Changelog: </b>
-        - <code>$COMMIT_HEAD</code>
-        <b></b>
-        #$KERNELNAME #$CODENAME #$VARIANT"
-}
 # Find Error
 function finerr() {
     curl -s -X POST "https://api.telegram.org/bot$TG_TOKEN/sendMessage" \
@@ -156,7 +129,7 @@ function finerr() {
 }
 # Zipping
 function zipping() {
-    cd AnyKernel || exit 1
+	cdir AnyKernel
 	cp -af $KERNEL_DIR/init.$CODENAME.Spectrum.rc spectrum/init.spectrum.rc && sed -i "s/persist.spectrum.kernel.*/persist.spectrum.kernel TheOneMemory/g" spectrum/init.spectrum.rc
 	cp -af $KERNEL_DIR/changelog META-INF/com/google/android/aroma/changelog.txt
 	cp -af anykernel-real.sh anykernel.sh
@@ -190,12 +163,39 @@ function zipping() {
 	## Prepare a final zip variable
 	ZIP_FINAL="$ZIPNAME-$DATE"
 
-#	msg "|| Signing Zip ||"
-#	tg_post_msg "<code>🔑 Signing Zip file with AOSP keys..</code>"
+	msg "|| Signing Zip ||"
+	tg_post_msg "<code>🔑 Signing Zip file with AOSP keys..</code>"
 
-#	curl -sLo zipsigner-3.0.jar https://github.com/Magisk-Modules-Repo/zipsigner/raw/master/bin/zipsigner-3.0-dexed.jar
-#	java -jar zipsigner-3.0.jar "$ZIP_FINAL".zip "$ZIP_FINAL"-signed.zip
-#	ZIP_FINAL="$ZIP_FINAL-signed"
+	curl -sLo zipsigner-3.0.jar https://github.com/Magisk-Modules-Repo/zipsigner/raw/master/bin/zipsigner-3.0-dexed.jar
+	java -jar zipsigner-3.0.jar "$ZIP_FINAL".zip "$ZIP_FINAL"-signed.zip
+	ZIP_FINAL="$ZIP_FINAL-signed"
+
+# Push kernel to telegram
+function push() {
+    cd AnyKernel
+    curl -F document="$ZIP_FINAL.zip" "https://api.telegram.org/bot$TG_TOKEN/sendDocument" \
+        -F chat_id="$TG_CHAT_ID" \
+        -F "disable_web_page_preview=true" \
+        -F "parse_mode=html" \
+        -F caption="🔐<b>Build Done</b>
+        - <code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s)... </code>
+
+        <b>📅 Build Date: </b>
+        -<code>$DATE</code>
+
+        <b>🐧 Linux Version: </b>
+        -<code>4.4.302</code>
+
+         <b>💿 Compiler: </b>
+        -<code>$KBUILD_COMPILER_STRING</code>
+
+        <b>📱 Device: </b>
+        -<code>$DEVICE_CODENAME($MANUFACTURERINFO)</code>
+
+        <b>🆑 Changelog: </b>
+        - <code>$COMMIT_HEAD</code>
+        <b></b>
+        #$KERNELNAME #$CODENAME #$VARIANT"
 	cd ..
 }
 compile
