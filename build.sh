@@ -155,8 +155,8 @@ function finerr() {
 # Zipping
 function zipping() {
 	cdir AnyKernel
-	cp -af $KERNEL_DIR/init.$CODENAME.Spectrum.rc spectrum/init.spectrum.rc && sed -i "s/persist.spectrum.kernel.*/persist.spectrum.kernel TheOneMemory/g" spectrum/init.spectrum.rc
-	cp -af $KERNEL_DIR/changelog META-INF/com/google/android/aroma/changelog.txt
+	cp -af $KERNEL_ROOTDIR/init.$CODENAME.Spectrum.rc spectrum/init.spectrum.rc && sed -i "s/persist.spectrum.kernel.*/persist.spectrum.kernel TheOneMemory/g" spectrum/init.spectrum.rc
+	cp -af $KERNEL_ROOTDIR/changelog META-INF/com/google/android/aroma/changelog.txt
 	cp -af anykernel-real.sh anykernel.sh
 	sed -i "s/kernel.string=.*/kernel.string=$KERNELNAME/g" anykernel.sh
 	sed -i "s/kernel.type=.*/kernel.type=$VARIANT/g" anykernel.sh
