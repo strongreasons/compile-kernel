@@ -45,7 +45,7 @@ ZIPNAME="$KERNELNAME-$CODENAME-$VARIANT-$BASE"
 MANUFACTURERINFO="ASUSTek Computer Inc."
 
 # Clone Kernel Source
-git clone --recursive https://$USERNAME:$TOKEN@github.com/Tiktodz/android_kernel_asus_sdm636 -b codelinearo-hmp $DEVICE_CODENAME
+git clone --recursive https://$USERNAME:$TOKEN@github.com/strongreasons/kernel_asus_sdm636 -b hmp $DEVICE_CODENAME
 
 # Clone AOSP Clang
 ClangPath=${MainClangZipPath}
@@ -72,9 +72,9 @@ export KBUILD_BUILD_USER=queen # Change with your own name or else.
 IMAGE=$(pwd)/$DEVICE_CODENAME/out/arch/arm64/boot/Image.gz-dtb
 CLANG_VER="$("$ClangPath"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
 LLD_VER="$("$ClangPath"/bin/ld.lld --version | head -n 1)"
-export KBUILD_COMPILER_STRING="$CLANG_VER"
-DATE=$(date +"%F-%S")
-START=$(date +"%s")
+export KBUILD_COMPILER_STRING="$CLANG_VER with $LLD_VER"
+DATE=$(date +%d%m%Y")
+START=$(date +%s")
 
 # Java
 command -v java > /dev/null 2>&1
@@ -202,4 +202,3 @@ zipping
 END=$(date +"%s")
 DIFF=$(($END - $START))
 push
-
