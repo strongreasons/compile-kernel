@@ -77,7 +77,6 @@ DATE=$(date +"%F-%S")
 START=$(date +"%s")
 
 # Java
-pacman -S jre8-openjdk
 command -v java > /dev/null 2>&1
 
 # Telegram
@@ -155,7 +154,7 @@ function finerr() {
 }
 # Zipping
 function zipping() {
-	cdir AnyKernel
+	cd AnyKernel || exit 1
 	cp -af $KERNEL_ROOTDIR/init.$CODENAME.Spectrum.rc spectrum/init.spectrum.rc && sed -i "s/persist.spectrum.kernel.*/persist.spectrum.kernel TheOneMemory/g" spectrum/init.spectrum.rc
 	cp -af $KERNEL_ROOTDIR/changelog META-INF/com/google/android/aroma/changelog.txt
 	cp -af anykernel-real.sh anykernel.sh
