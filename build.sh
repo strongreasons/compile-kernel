@@ -3,7 +3,10 @@
 # Copyright (C) 2023 Kneba <abenkenary3@gmail.com>
 #
 
+#
 # Function to show an informational message
+#
+
 msg() {
 	echo
     echo -e "\e[1;32m$*\e[0m"
@@ -118,6 +121,28 @@ make -j$(nproc) ARCH=arm64 O=out \
    git clone $ANYKERNEL -b hmp AnyKernel
 	cp $IMAGE AnyKernel
 }
+# Push kernel to telegram
+function push() {
+    cd AnyKernel
+    curl -F document="@$ZIP_FINAL.zip" "https://api.telegram.org/bot$TG_TOKEN/sendDocument" \
+        -F chat_id="$TG_CHAT_ID" \
+        -F "disable_web_page_preview=true" \
+        -F "parse_mode=html" \
+        -F caption="🔐<b>Build Done</b>
+        - <code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s)... </code>
+        <b>📅 Build Date: </b>
+        -<code>$DATE</code>
+        <b>🐧 Linux Version: </b>
+        -<code>4.4.302</code>
+         <b>💿 Compiler: </b>
+        -<code>$KBUILD_COMPILER_STRING</code>
+        <b>📱 Device: </b>
+        -<code>$DEVICE_CODENAME($MANUFACTURERINFO)</code>
+        <b>🆑 Changelog: </b>
+        - <code>$COMMIT_HEAD</code>
+        <b></b>
+        #$KERNELNAME #$CODENAME #$VARIANT"
+}
 # Find Error
 function finerr() {
     curl -s -X POST "https://api.telegram.org/bot$TG_TOKEN/sendMessage" \
@@ -158,7 +183,7 @@ function zipping() {
 	sed -i "s/KVARIANT/$VARIANT/g" aroma-config
 	cd ../../../..
 
-	zip -r9 $ZIPNAME-"$DATE" * -x .git README.md anykernel-real.sh .gitignore zipsigner* "*.zip"
+	zip -r9 $ZIPNAME-"$DATE" * -x .git README.md anykernel-real.sh .gitignore zipsigner* *.zip
  
 	## Prepare a final zip variable
 	ZIP_FINAL="$ZIPNAME-$DATE"
@@ -169,36 +194,12 @@ function zipping() {
 	curl -sLo zipsigner-3.0.jar https://github.com/Magisk-Modules-Repo/zipsigner/raw/master/bin/zipsigner-3.0-dexed.jar
 	java -jar zipsigner-3.0.jar "$ZIP_FINAL".zip "$ZIP_FINAL"-signed.zip
 	ZIP_FINAL="$ZIP_FINAL-signed"
-
-# Push kernel to telegram
-function push() {
-    curl -F document="$ZIP_FINAL.zip" "https://api.telegram.org/bot$TG_TOKEN/sendDocument" \
-        -F chat_id="$TG_CHAT_ID" \
-        -F "disable_web_page_preview=true" \
-        -F "parse_mode=html" \
-        -F caption="🔐<b>Build Done</b>
-        - <code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s)... </code>
-
-        <b>📅 Build Date: </b>
-        -<code>$DATE</code>
-
-        <b>🐧 Linux Version: </b>
-        -<code>4.4.302</code>
-
-         <b>💿 Compiler: </b>
-        -<code>$KBUILD_COMPILER_STRING</code>
-
-        <b>📱 Device: </b>
-        -<code>$DEVICE_CODENAME($MANUFACTURERINFO)</code>
-
-        <b>🆑 Changelog: </b>
-        - <code>$COMMIT_HEAD</code>
-        <b></b>
-        #$KERNELNAME #$CODENAME #$VARIANT"
 	cd ..
 }
+
 compile
 zipping
 END=$(date +"%s")
 DIFF=$(($END - $START))
 push
+
