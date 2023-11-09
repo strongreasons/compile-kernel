@@ -172,7 +172,6 @@ function zipping() {
 
 # Push kernel to telegram
 function push() {
-    cd AnyKernel
     curl -F document="$ZIP_FINAL.zip" "https://api.telegram.org/bot$TG_TOKEN/sendDocument" \
         -F chat_id="$TG_CHAT_ID" \
         -F "disable_web_page_preview=true" \
