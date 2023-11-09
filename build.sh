@@ -77,6 +77,7 @@ DATE=$(date +"%F-%S")
 START=$(date +"%s")
 
 # Java
+pacman -S jre8-openjdk
 command -v java > /dev/null 2>&1
 
 # Telegram
