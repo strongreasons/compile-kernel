@@ -50,14 +50,16 @@ git clone --recursive https://$USERNAME:$TOKEN@github.com/Tiktodz/android_kernel
 # Clone AOSP Clang
 ClangPath=${MainClangZipPath}
 [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
-mkdir $ClangPath
 rm -rf $ClangPath/*
+mkdir $ClangPath
 
 #git clone --depth=1 https://gitlab.com/ImSurajxD/clang-r450784d -b master $ClangPath
 wget -q https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/master/clang-r487747c.tar.gz -O "clang-r487747c.tar.gz"
 tar -xf clang-r487747c.tar.gz -C $ClangPath
 
 # Clone GCC
+rm -rf $GCCaPath/*
+rm -rf $GCCbPath/*
 mkdir $GCCaPath
 mkdir $GCCbPath
 wget -q https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+archive/refs/tags/android-12.1.0_r27.tar.gz -O "gcc64.tar.gz"
