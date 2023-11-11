@@ -45,7 +45,7 @@ ZIPNAME="$KERNELNAME-$CODENAME-$VARIANT-$BASE"
 MANUFACTURERINFO="ASUSTek Computer Inc."
 
 # Clone Kernel Source
-git clone --recursive https://$USERNAME:$TOKEN@github.com/strongreasons/kernel_asus_sdm636 -b hmp $DEVICE_CODENAME
+git clone --recursive https://$USERNAME:$TOKEN@github.com/Tiktodz/android_kernel_asus_sdm636 -b codelinaro-hmp $DEVICE_CODENAME
 
 # Clone AOSP Clang
 ClangPath=${MainClangZipPath}
@@ -95,7 +95,7 @@ cd ${KERNEL_ROOTDIR}
 export HASH_HEAD=$(git rev-parse --short HEAD)
 export COMMIT_HEAD=$(git log --oneline -1)
 make -j$(nproc) O=out ARCH=arm64 $KERNEL_DEFCONFIG
-make -j$(nproc) ARCH=arm64 O=out LLVM=1 \
+make -j$(nproc) ARCH=arm64 O=out \
     LD_LIBRARY_PATH="${ClangPath}/lib64:${LD_LIBRARY_PATH}" \
     PATH=$ClangPath/bin:$GCCaPath/bin:$GCCbPath/bin:/usr/bin:${PATH} \
     CC=${ClangPath}/bin/clang \
