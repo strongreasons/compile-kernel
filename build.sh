@@ -45,7 +45,7 @@ ZIPNAME="$KERNELNAME-$CODENAME-$VARIANT-$BASE"
 MANUFACTURERINFO="ASUSTek Computer Inc."
 
 # Clone Kernel Source
-git clone --recursive https://$USERNAME:$TOKEN@github.com/Tiktodz/android_kernel_asus_sdm636 -b codelinaro-hmp $DEVICE_CODENAME
+git clone --recursive https://$USERNAME:$TOKEN@github.com/Tiktodz/android_kernel_asus_sdm660 -b wip $DEVICE_CODENAME
 
 # Clone AOSP Clang
 ClangPath=${MainClangZipPath}
@@ -53,9 +53,9 @@ ClangPath=${MainClangZipPath}
 rm -rf $ClangPath/*
 mkdir $ClangPath
 
-git clone --depth=1 https://gitlab.com/ImSurajxD/clang-r450784d -b master $ClangPath
-#wget -q https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/master/clang-r487747c.tar.gz -O "clang-r487747c.tar.gz"
-#tar -xf clang-r487747c.tar.gz -C $ClangPath
+#git clone --depth=1 https://gitlab.com/ImSurajxD/clang-r450784d -b master $ClangPath
+wget -q https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/master/clang-r487747c.tar.gz -O "clang-r487747c.tar.gz"
+tar -xf clang-r487747c.tar.gz -C $ClangPath
 
 # Clone GCC
 rm -rf $GCCaPath/*
