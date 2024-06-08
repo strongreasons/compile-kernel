@@ -35,8 +35,8 @@ MainZipGCCbPath="${MainPath}/GCC32-zip"
 # Identity
 KERNELNAME=TheOneMemory
 CODENAME=Hayzel
-VARIANT=HMP
-BASE=CLO
+VARIANT=EAS
+BASE=EOL
 
 # The name of the Kernel, to name the ZIP
 ZIPNAME="$KERNELNAME-$CODENAME-$VARIANT-$BASE"
@@ -45,7 +45,7 @@ ZIPNAME="$KERNELNAME-$CODENAME-$VARIANT-$BASE"
 MANUFACTURERINFO="ASUSTek Computer Inc."
 
 # Clone Kernel Source
-git clone --recursive https://$USERNAME:$TOKEN@github.com/Tiktodz/android_kernel_asus_sdm660 -b wip $DEVICE_CODENAME
+git clone https://$USERNAME:$TOKEN@github.com/strongreasons/android_kernel_asus_sdm660 -b eas $DEVICE_CODENAME
 
 # Clone AOSP Clang
 ClangPath=${MainClangZipPath}
@@ -120,7 +120,7 @@ make -j$(nproc) ARCH=arm64 O=out \
 	finerr
 	exit 1
    fi
-   git clone $ANYKERNEL -b hmp AnyKernel
+   git clone $ANYKERNEL -b eas AnyKernel
 	cp $IMAGE AnyKernel
 }
 # Push kernel to telegram
