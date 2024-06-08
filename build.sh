@@ -45,7 +45,7 @@ ZIPNAME="$KERNELNAME-$CODENAME-$VARIANT-$BASE"
 MANUFACTURERINFO="ASUSTek Computer Inc."
 
 # Clone Kernel Source
-git clone https://$USERNAME:$TOKEN@github.com/strongreasons/android_kernel_asus_sdm660 -b eas $DEVICE_CODENAME
+git clone --depth=1 https://github.com/strongreasons/android_kernel_asus_sdm660 -b eas $DEVICE_CODENAME
 
 # Clone AOSP Clang
 ClangPath=${MainClangZipPath}
