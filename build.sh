@@ -27,12 +27,12 @@ GCCaPath="${MainPath}/GCC64"
 GCCbPath="${MainPath}/GCC32"
 
 # Identity
-KERNELNAME=ElectroWizard
-VERSION=PieQ
+KERNELNAME=TheOneMemory
+VERSION=r38
 VARIANT=HMP
 
 # Clone Kernel Source
-git clone --depth=1 https://$USERNAME:$TOKEN@github.com/strongreasons/android_kernel_asus_sdm636 -b ten-caf-hmp $DEVICE_CODENAME
+git clone --depth=1 --recursive https://@github.com/strongreasons/android_kernel_asus_sdm660 -b 10 $DEVICE_CODENAME
 
 # Show manufacturer info
 MANUFACTURERINFO="ASUSTek Computer Inc."
@@ -110,6 +110,7 @@ make -j$(nproc) ARCH=arm64 O=out \
    git clone $ANYKERNEL -b hmp-old AnyKernel
 	cp $IMAGE AnyKernel
 }
+
 # Push kernel to telegram
 function push() {
     cd AnyKernel
