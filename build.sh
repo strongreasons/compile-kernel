@@ -78,6 +78,7 @@ tg_post_msg() {
     -d "parse_mode=html" \
     -d text="$1"
 }
+
 # Compile
 compile(){
 cd ${KERNEL_ROOTDIR}
@@ -138,6 +139,7 @@ function push() {
         <b></b>
         #Android9 #Android10"
 }
+
 # Find Error
 function finerr() {
     curl -s -X POST "https://api.telegram.org/bot$TG_TOKEN/sendMessage" \
@@ -147,6 +149,7 @@ function finerr() {
         -d text="❌ I'm tired of compiling kernels, lord @TKTDS GOBLOK gan...please give lord @TKTDS motivation"
     exit 1
 }
+
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
@@ -162,6 +165,7 @@ function zipping() {
 	ZIP_FINAL="$ZIP_FINAL-signed"
     cd ..
 }
+
 compile
 zipping
 END=$(date +"%s")
