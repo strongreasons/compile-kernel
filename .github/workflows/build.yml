@@ -9,11 +9,11 @@ jobs:
 
     runs-on: ubuntu-latest
     container:
-      image: panchajanya1999/archlinux:latest
+      image: archlinux:latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Setup env
-        run: pacman -Syu --needed --noconfirm wget base-devel xmlto inetutils bc cpio python-sphinx python-sphinx_rtd_theme graphviz imagemagick git python zip 
+        run: pacman -Sy --noconfirm sudo && sudo pacman -Sy --noconfirm base-devel bc bison ccache jdk-openjdk ncurses libelf python ca-certificates curl flex clang gcc git wget zip zstd make openssl tzdata
       - name: Build Kernel
         env:
           TOKEN: ${{ secrets.TOKEN }}
