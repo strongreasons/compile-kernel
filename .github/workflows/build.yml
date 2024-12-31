@@ -26,5 +26,5 @@ jobs:
         run: |
           export token=${TG_TOKEN}
           export git=${TOKEN}
-          export TZ=Asia/Shanghai
+          export TZ=Asia/Jakarta
           bash build.sh
