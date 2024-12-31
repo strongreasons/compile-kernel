@@ -1,2 +1,3 @@
-main
-10
+compile-kernel branch: main
+kernel branch: 10-apatch
+anykernel3 branch: hmp-old
