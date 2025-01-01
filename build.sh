@@ -45,7 +45,8 @@ ClangPath=${MainClangPath}
 [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
 mkdir $ClangPath
 rm -rf $ClangPath/*
-git clone --depth=1 https://github.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-5696680 $ClangPath
+#git clone --depth=1 https://github.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-5696680 $ClangPath
+git clone --depth=1 https://github.com/picasso09/clang-9.0.3-r353983c1 $ClangPath
 
 # Clone GCC
 mkdir $GCCaPath
