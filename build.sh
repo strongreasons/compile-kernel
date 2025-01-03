@@ -32,7 +32,7 @@ VERSION=r38-APatch
 VARIANT=HMP
 
 # Clone Kernel Source
-git clone --depth=1 https://@github.com/strongreasons/android_kernel_asus_sdm660 -b 10-apatch $DEVICE_CODENAME
+git clone --depth=1 https://github.com/Kneba/kernel_asus_sdm660 -b clo $DEVICE_CODENAME
 
 # Show manufacturer info
 MANUFACTURERINFO="ASUSTek Computer Inc."
