@@ -29,7 +29,7 @@ GCCbPath="${MainPath}/GCC32"
 # Identity
 KERNELNAME=TOM
 VERSION=CLO-APatch
-VARIANT=HMP
+VARIANT=Q-HMP
 
 # Clone Kernel Source
 git clone --depth=1 https://github.com/texascake/android_kernel_asus_sdm660 -b clo $DEVICE_CODENAME
@@ -66,6 +66,7 @@ CLANG_VER="$("$ClangPath"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*
 LLD_VER="$("$ClangPath"/bin/ld.lld --version | head -n 1)"
 export KBUILD_COMPILER_STRING="$CLANG_VER"
 DATE=$(date +"%Y%m%d"-%H%M)
+DATE2=$(date +"%Y%m%d")
 START=$(date +"%s")
 
 # Java
@@ -156,9 +157,9 @@ function finerr() {
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 $KERNELNAME-$VERSION-$VARIANT-"$DATE" . -x ".git*" -x "README.md" -x "*.zip"
+    zip -r9 $KERNELNAME-$VERSION-$VARIANT-"$DATE2" . -x ".git*" -x "README.md" -x "*.zip"
 
-    ZIP_FINAL="$KERNELNAME-$VERSION-$VARIANT-$DATE"
+    ZIP_FINAL="$KERNELNAME-$VERSION-$VARIANT-$DATE2"
 
     msg "|| Signing Zip ||"
     tg_post_msg "<code>🔑 Signing Zip file with AOSP keys..</code>"
