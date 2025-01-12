@@ -141,7 +141,7 @@ function push() {
         <b>🆑 Changelog: </b>
         - <code>$COMMIT_HEAD</code>
         <b></b>
-        #Android8 #Android10"
+        #Oreo #Q #CLO #HMP"
 }
 
 # Find Error
