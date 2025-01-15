@@ -28,11 +28,11 @@ GCCbPath="${MainPath}/GCC32"
 
 # Identity
 KERNELNAME=TOM
-VERSION=CLO-APatch
+VERSION=CLO-r42-APatch
 VARIANT=Q-HMP
 
 # Clone Kernel Source
-git clone --depth=1 https://github.com/texascake/android_kernel_asus_sdm660 -b clo $DEVICE_CODENAME
+git clone --depth=1 https://github.com/strongreasons/kernel_asus_sdm636 -b 42 $DEVICE_CODENAME
 
 # Show manufacturer info
 MANUFACTURERINFO="ASUSTek Computer Inc."
