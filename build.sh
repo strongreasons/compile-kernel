@@ -28,11 +28,11 @@ GCCbPath="${MainPath}/GCC32"
 
 # Identity
 KERNELNAME=TOM
-VERSION=CLO-r44-APatch
+VERSION=codelinaro-r44-APatch
 VARIANT=Q-HMP
 
 # Clone Kernel Source
-git clone --depth=1 https://github.com/texascake/android_kernel_asus_sdm660 -b clo $DEVICE_CODENAME
+git clone --depth=1 https://github.com/Kneba/kernel_asus_sdm660 -b clo --single-branch $DEVICE_CODENAME
 
 # Show manufacturer info
 MANUFACTURERINFO="ASUSTek Computer Inc."
@@ -60,7 +60,7 @@ tar -xf gcc32.tar.gz -C $GCCbPath
 KERNEL_ROOTDIR=$(pwd)/$DEVICE_CODENAME # IMPORTANT ! Fill with your kernel source root directory.
 export LD=ld.lld
 export KBUILD_BUILD_USER=queen # Change with your own name or else.
-export KBUILD_BUILD_HOST=serenade # Change with your own name or else.
+export KBUILD_BUILD_HOST=github-workflows # Change with your own name or else.
 IMAGE=$(pwd)/$DEVICE_CODENAME/out/arch/arm64/boot/Image.gz-dtb
 CLANG_VER="$("$ClangPath"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
 LLD_VER="$("$ClangPath"/bin/ld.lld --version | head -n 1)"
@@ -112,7 +112,7 @@ make -j$(nproc) ARCH=arm64 O=out \
 	finerr
 	exit 1
    fi
-   git clone $ANYKERNEL -b hmp-old AnyKernel
+   git clone $ANYKERNEL -b polos AnyKernel
 	cp $IMAGE AnyKernel
 }
 
@@ -157,9 +157,9 @@ function finerr() {
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 $KERNELNAME-$VERSION-$VARIANT-"$DATE" . -x ".git*" -x "README.md" -x "*.zip"
+    zip -r9 $KERNELNAME-$VERSION--"$DATE" . -x ".git*" -x "README.md" -x "*.zip"
 
-    ZIP_FINAL="$KERNELNAME-$VERSION-$VARIANT-$DATE"
+    ZIP_FINAL="$KERNELNAME-$VERSION--$DATE"
 
     msg "|| Signing Zip ||"
     tg_post_msg "<code>🔑 Signing Zip file with AOSP keys..</code>"
