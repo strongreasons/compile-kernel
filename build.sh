@@ -28,7 +28,7 @@ GCCbPath="${MainPath}/GCC32"
 
 # Identity
 KERNELNAME=TOM
-VERSION=codelinaro-r44-APatch
+VERSION=CLO-APatch
 VARIANT=Q-HMP
 
 # Clone Kernel Source
@@ -71,6 +71,9 @@ START=$(date +"%s")
 
 # Java
 command -v java > /dev/null 2>&1
+
+# Check Kernel Version
+KERVER=$(cd $KERNEL_ROOTDIR; make kernelversion)
 
 # Telegram
 export BOT_MSG_URL="https://api.telegram.org/bot$TG_TOKEN/sendMessage"
@@ -141,7 +144,11 @@ function push() {
         <b>🆑 Changelog: </b>
         - <code>$COMMIT_HEAD</code>
         <b></b>
-        #Oreo #Q #CLO #HMP"
+
+        <b>Ⓜ MD5: </b>
+        - <code>$MD5CHECK</code>
+        <b></b>
+        #O #Q #CLO #HMP"
 }
 
 # Find Error
@@ -157,16 +164,19 @@ function finerr() {
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 $KERNELNAME-$VERSION--"$DATE" . -x ".git*" -x "README.md" -x "*.zip"
+    zip -r9 $KERNELNAME-$KERVER-"$DATE" * -x .git README.md ./*placeholder anykernel-real.sh .gitignore  zipsigner* *.zip
 
-    ZIP_FINAL="$KERNELNAME-$VERSION--$DATE"
+    ZIP_FINAL="$KERNELNAME-$KERVER-$DATE"
 
     msg "|| Signing Zip ||"
     tg_post_msg "<code>🔑 Signing Zip file with AOSP keys..</code>"
 
-	curl -sLo zipsigner-3.0.jar https://github.com/Magisk-Modules-Repo/zipsigner/raw/master/bin/zipsigner-3.0-dexed.jar
-	java -jar zipsigner-3.0.jar "$ZIP_FINAL".zip "$ZIP_FINAL"-signed.zip
-	ZIP_FINAL="$ZIP_FINAL-signed"
+    mv $ZIP_FINAL* kernel.zip
+    curl -sLo zipsigner-3.0-dexed.jar https://github.com/Magisk-Modules-Repo/zipsigner/raw/master/bin/zipsigner-3.0-dexed.jar
+    java -jar zipsigner-3.0-dexed.jar kernel.zip kernel-signed.zip
+    ZIP_FINAL="$ZIP_FINAL-signed"
+    mv kernel-signed.zip $ZIP_FINAL.zip
+    MD5CHECK=$(md5sum "$ZIP_FINAL.zip" | cut -d' ' -f1)
     cd ..
 }
 
