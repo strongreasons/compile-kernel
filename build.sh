@@ -29,7 +29,7 @@ GCCbPath="${MainPath}/GCC32"
 # Identity
 KERNELNAME=TOM
 VERSION=CLO-APatch
-VARIANT=Q-HMP
+VARIANT=HMP
 
 # Clone Kernel Source
 git clone --depth=1 https://github.com/Kneba/kernel_asus_sdm660 -b clo --single-branch $DEVICE_CODENAME
@@ -164,9 +164,9 @@ function finerr() {
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 $KERNELNAME-$KERVER-"$DATE" * -x .git README.md ./*placeholder anykernel-real.sh .gitignore  zipsigner* *.zip
+    zip -r9 $KERNELNAME-$VARIANT-$KERVER-"$DATE2" * -x .git README.md ./*placeholder anykernel-real.sh .gitignore  zipsigner* *.zip
 
-    ZIP_FINAL="$KERNELNAME-$KERVER-$DATE"
+    ZIP_FINAL="$KERNELNAME-$VARIANT-$KERVER-$DATE2"
 
     msg "|| Signing Zip ||"
     tg_post_msg "<code>🔑 Signing Zip file with AOSP keys..</code>"
