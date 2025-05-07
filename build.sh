@@ -164,9 +164,9 @@ function finerr() {
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 $KERNELNAME-$VARIANT-$KERVER-"$DATE2" * -x .git README.md ./*placeholder anykernel-real.sh .gitignore  zipsigner* *.zip
+    zip -r9 $KERNELNAME-$VARIANT-$KERVER-"$DATE" * -x .git README.md ./*placeholder anykernel-real.sh .gitignore  zipsigner* *.zip
 
-    ZIP_FINAL="$KERNELNAME-$VARIANT-$KERVER-$DATE2"
+    ZIP_FINAL="$KERNELNAME-$VARIANT-$KERVER-$DATE"
 
     msg "|| Signing Zip ||"
     tg_post_msg "<code>🔑 Signing Zip file with AOSP keys..</code>"
