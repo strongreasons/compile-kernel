@@ -28,11 +28,11 @@ GCCbPath="${MainPath}/GCC32"
 
 # Identity
 KERNELNAME=TOM
-VERSION=CLO-APatch
+VERSION=CLO-APatch-KSUN
 VARIANT=HMP
 
 # Clone Kernel Source
-git clone --depth=1 https://github.com/Kneba/kernel_asus_sdm660 -b clo --single-branch $DEVICE_CODENAME
+git clone --depth=1 --recursive https://github.com/Kneba/kernel_asus_sdm660 -b clo-ksun --single-branch $DEVICE_CODENAME
 
 # Show manufacturer info
 MANUFACTURERINFO="ASUSTek Computer Inc."
