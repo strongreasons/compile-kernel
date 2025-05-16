@@ -171,6 +171,8 @@ function zipping() {
     msg "|| Signing Zip ||"
     tg_post_msg "<code>🔑 Signing Zip file with AOSP keys..</code>"
 
+    mv $ZIP_FINAL* $KERNEL_ROOTDIR/$ZIP_FINAL.zip
+    cd $KERNEL_ROOTDIR
     mv $ZIP_FINAL* kernel.zip
     curl -sLo zipsigner-3.0-dexed.jar https://github.com/Magisk-Modules-Repo/zipsigner/raw/master/bin/zipsigner-3.0-dexed.jar
     java -jar zipsigner-3.0-dexed.jar kernel.zip kernel-signed.zip
