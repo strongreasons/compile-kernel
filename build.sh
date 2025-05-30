@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Copyright (C) 2022 Kneba <abenkenary3@gmail.com>
+# Copyright (C) 2022-2025 Kneba <abenkenary3@gmail.com>
 #
 
 # Function to show an informational message
@@ -60,7 +60,7 @@ tar -xf gcc32.tar.gz -C $GCCbPath
 KERNEL_ROOTDIR=$(pwd)/$DEVICE_CODENAME # IMPORTANT ! Fill with your kernel source root directory.
 export LD=ld.lld
 export KBUILD_BUILD_USER=queen # Change with your own name or else.
-export KBUILD_BUILD_HOST=github-workflows # Change with your own name or else.
+export KBUILD_BUILD_HOST=github-actions # Change with your own name or else.
 IMAGE=$(pwd)/$DEVICE_CODENAME/out/arch/arm64/boot/Image.gz-dtb
 CLANG_VER="$("$ClangPath"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
 LLD_VER="$("$ClangPath"/bin/ld.lld --version | head -n 1)"
