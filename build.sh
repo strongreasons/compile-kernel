@@ -34,9 +34,6 @@ VARIANT=EAS
 # Clone Kernel Source
 git clone --depth=1 --recursive https://github.com/strongreasons/android_kernel_asus_sdm660 -b dark --single-branch $DEVICE_CODENAME
 
-# Additional command (if you're lazy to commit :v)
-sed -i 's/CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION="-ToM-"/g' arch/arm64/configs/darkonah_defconfig
-
 # Show manufacturer info
 MANUFACTURERINFO="ASUSTek Computer Inc."
 
@@ -92,6 +89,8 @@ tg_post_msg() {
 # Compile
 compile(){
 cd ${KERNEL_ROOTDIR}
+# Additional command (if you're lazy to commit :v)
+sed -i 's/CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION="-ToM-"/g' arch/arm64/configs/darkonah_defconfig
 export HASH_HEAD=$(git rev-parse --short HEAD)
 export COMMIT_HEAD=$(git log --oneline -1)
 make -j$(nproc) O=out ARCH=arm64 darkonah_defconfig
@@ -136,7 +135,7 @@ function push() {
         -<code>$DATE</code>
 
         <b>🐧 Linux Version: </b>
-        -<code>4.4.205</code>
+        -<code>$KERVER</code>
 
          <b>💿 Compiler: </b>
         -<code>$CLANG_VER</code>
@@ -151,7 +150,7 @@ function push() {
         <b>Ⓜ MD5: </b>
         - <code>$MD5CHECK</code>
         <b></b>
-        #O #Q #CLO #HMP"
+        #O #Q #$VERSION #$VARIANT"
 }
 
 # Find Error
@@ -167,9 +166,9 @@ function finerr() {
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 $KERNELNAME-$VARIANT-$VERSION-$KERVER-"$DATE" * -x .git README.md ./*placeholder anykernel-real.sh .gitignore  zipsigner* *.zip
+    zip -r9 $KERNELNAME-$VARIANT-$VERSION-$KERVER-"$DATE2" * -x .git README.md ./*placeholder anykernel-real.sh .gitignore  zipsigner* *.zip
 
-    ZIP_FINAL="$KERNELNAME-$VARIANT-$VERSION-$KERVER-$DATE"
+    ZIP_FINAL="$KERNELNAME-$VARIANT-$VERSION-$KERVER-$DATE2"
 
     msg "|| Signing Zip ||"
     tg_post_msg "<code>🔑 Signing Zip file with AOSP keys..</code>"
