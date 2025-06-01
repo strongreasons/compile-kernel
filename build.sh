@@ -35,7 +35,7 @@ VARIANT=EAS
 git clone --depth=1 --recursive https://github.com/strongreasons/android_kernel_asus_sdm660 -b dark --single-branch $DEVICE_CODENAME
 
 # Additional command (if you're lazy to commit :v)
-sed -i 's/CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION="-TOM-CLO"/g' arch/arm64/configs/asus/darkonah_defconfig
+sed -i 's/CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION="-ToM-"/g' arch/arm64/configs/darkonah_defconfig
 
 # Show manufacturer info
 MANUFACTURERINFO="ASUSTek Computer Inc."
