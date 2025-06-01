@@ -28,8 +28,8 @@ GCCbPath="${MainPath}/GCC32"
 
 # Identity
 KERNELNAME=TOM
-VERSION=EOL
-VARIANT=EAS
+VERSION=CLO
+VARIANT=HMP
 
 # Clone Kernel Source
 git clone --depth=1 --recursive https://github.com/Kneba/kernel_asus_sdm660 -b clo-ksun --single-branch $DEVICE_CODENAME
@@ -86,14 +86,14 @@ tg_post_msg() {
     -d text="$1"
 }
 
-# Compile
+# Compile time
 compile(){
 cd ${KERNEL_ROOTDIR}
 # Additional command (if you're lazy to commit :v)
-sed -i 's/CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION="-TOM-"/g' arch/arm64/configs/X00TD_defconfig
+sed -i 's/CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION="-TOM-"/g' arch/arm64/configs/$KERNEL_DEFCONFIG
 export HASH_HEAD=$(git rev-parse --short HEAD)
 export COMMIT_HEAD=$(git log --oneline -1)
-make -j$(nproc) O=out ARCH=arm64 darkonah_defconfig
+make -j$(nproc) O=out ARCH=arm64 $KERNEL_DEFCONFIG
 make -j$(nproc) ARCH=arm64 O=out \
     LD_LIBRARY_PATH="${ClangPath}/lib64:${LD_LIBRARY_PATH}" \
     PATH=$ClangPath/bin:$GCCaPath/bin:$GCCbPath/bin:/usr/bin:${PATH} \
