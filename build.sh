@@ -32,7 +32,7 @@ VERSION=EOL
 VARIANT=EAS
 
 # Clone Kernel Source
-git clone --depth=1 --recursive https://github.com/strongreasons/android_kernel_asus_sdm660 -b dark --single-branch $DEVICE_CODENAME
+git clone --depth=1 --recursive https://github.com/Kneba/kernel_asus_sdm660 -b clo-ksun --single-branch $DEVICE_CODENAME
 
 # Show manufacturer info
 MANUFACTURERINFO="ASUSTek Computer Inc."
@@ -90,7 +90,7 @@ tg_post_msg() {
 compile(){
 cd ${KERNEL_ROOTDIR}
 # Additional command (if you're lazy to commit :v)
-sed -i 's/CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION="-ToM-"/g' arch/arm64/configs/darkonah_defconfig
+sed -i 's/CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION="-TOM-"/g' arch/arm64/configs/X00TD_defconfig
 export HASH_HEAD=$(git rev-parse --short HEAD)
 export COMMIT_HEAD=$(git log --oneline -1)
 make -j$(nproc) O=out ARCH=arm64 darkonah_defconfig
