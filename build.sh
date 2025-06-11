@@ -32,7 +32,7 @@ VERSION=CLO
 VARIANT=HMP
 
 # Clone Kernel Source
-git clone --depth=1 --recursive https://github.com/texascake/msm-4.4 -b caf --single-branch $DEVICE_CODENAME
+git clone --depth=1 --recursive https://github.com/Kneba/kernel_asus_sdm660 -b clo-ksun --single-branch $DEVICE_CODENAME
 
 # Show manufacturer info
 MANUFACTURERINFO="ASUSTek Computer Inc."
