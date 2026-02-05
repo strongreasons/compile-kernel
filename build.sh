@@ -28,8 +28,8 @@ GCCbPath="${MainPath}/GCC32"
 
 # Identity
 KERNELNAME=TOM
-VERSION=CLO
 VARIANT=HMP
+VERSION=CLO
 
 # Clone Kernel Source
 git clone --depth=1 --recursive https://$AWAL:$AKHIR@github.com/strongreasons/android_kernel_asus_sdm660 -b folk --single-branch $DEVICE_CODENAME
@@ -61,7 +61,7 @@ tar -xf gcc32.tar.gz -C $GCCbPath
 KERNEL_ROOTDIR=$(pwd)/$DEVICE_CODENAME # IMPORTANT ! Fill with your kernel source root directory.
 export LD=ld.lld
 export KBUILD_BUILD_USER=tokodepia # Change with your own name or else.
-export KBUILD_BUILD_HOST=github # Change with your own name or else.
+export KBUILD_BUILD_HOST=fedora-linux # Change with your own name or else.
 IMAGE=$(pwd)/$DEVICE_CODENAME/out/arch/arm64/boot/Image.gz-dtb
 CLANG_VER="$("$ClangPath"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
 LLD_VER="$("$ClangPath"/bin/ld.lld --version | head -n 1)"
@@ -91,7 +91,7 @@ tg_post_msg() {
 compile(){
 cd ${KERNEL_ROOTDIR}
 # Additional command (if you're lazy to commit :v)
-sed -i 's/CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION="-TOMTzy"/g' arch/arm64/configs/$KERNEL_DEFCONFIG
+sed -i 's/CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION="-TOMTzy-969"/g' arch/arm64/configs/$KERNEL_DEFCONFIG
 export HASH_HEAD=$(git rev-parse --short HEAD)
 export COMMIT_HEAD=$(git log --oneline -1)
 make -j$(nproc) O=out ARCH=arm64 $KERNEL_DEFCONFIG
