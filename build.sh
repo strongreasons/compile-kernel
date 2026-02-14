@@ -27,12 +27,12 @@ GCCaPath="${MainPath}/GCC64"
 GCCbPath="${MainPath}/GCC32"
 
 # Identity
-KERNELNAME=TOM
+KERNELNAME=TOM-TZY
 VARIANT=HMP
 VERSION=CLO
 
 # Clone Kernel Source
-git clone --depth=1 --recursive https://$AWAL:$AKHIR@github.com/strongreasons/android_kernel_asus_sdm660 -b folk --single-branch $DEVICE_CODENAME
+git clone --depth=1 --recurse-submodules https://$AWAL:$AKHIR@github.com/strongreasons/android_kernel_asus_sdm660 -b folk --single-branch $DEVICE_CODENAME
 #git clone --depth=1 --recursive https://$AWAL:$AKHIR@github.com/Tiktodz/android_kernel_asus_sdm636 -b clotzy --single-branch $DEVICE_CODENAME
 
 # Show manufacturer info
