@@ -27,7 +27,7 @@ GCCaPath="${MainPath}/GCC64"
 GCCbPath="${MainPath}/GCC32"
 
 # Identity
-KERNELNAME=TOM-TZY
+KERNELNAME=TOM
 VARIANT=HMP
 VERSION=CLO
 
@@ -91,7 +91,7 @@ tg_post_msg() {
 compile(){
 cd ${KERNEL_ROOTDIR}
 # Additional command (if you're lazy to commit :v)
-sed -i 's/CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION="-TOM-VoidWalker-969+"/g' arch/arm64/configs/$KERNEL_DEFCONFIG
+sed -i 's/CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION="-TOM-969+"/g' arch/arm64/configs/$KERNEL_DEFCONFIG
 export HASH_HEAD=$(git rev-parse --short HEAD)
 export COMMIT_HEAD=$(git log --oneline -1)
 make -j$(nproc) O=out ARCH=arm64 $KERNEL_DEFCONFIG
