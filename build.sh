@@ -33,7 +33,7 @@ VARIANT=HMP
 VERSION=CLO
 
 # Clone Kernel Source
-git clone --depth=1 --recurse-submodules https://$AWAL:$AKHIR@github.com/strongreasons/android_kernel_asus_sdm660 -b folk --single-branch $DEVICE_CODENAME
+git clone --depth=1 https://$AWAL:$AKHIR@github.com/strongreasons/android_kernel_asus_sdm660 -b folk --single-branch $DEVICE_CODENAME
 #git clone --depth=1 --recursive https://$AWAL:$AKHIR@github.com/Tiktodz/android_kernel_asus_sdm636 -b clotzy --single-branch $DEVICE_CODENAME
 
 # Show manufacturer info
@@ -61,7 +61,7 @@ tar -xf gcc32.tar.gz -C $GCCbPath
 # Prepare
 KERNEL_ROOTDIR=$(pwd)/$DEVICE_CODENAME # IMPORTANT ! Fill with your kernel source root directory.
 export LD=ld.lld
-export KBUILD_BUILD_USER=hanaqueen # Change with your own name or else.
+export KBUILD_BUILD_USER=theonememory # Change with your own name or else.
 export KBUILD_BUILD_HOST=$(cat /etc/hostname) # Change with your own name or else.
 IMAGE=$(pwd)/$DEVICE_CODENAME/out/arch/arm64/boot/Image.gz-dtb
 CLANG_VER="$("$ClangPath"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
@@ -91,7 +91,7 @@ tg_post_msg() {
 # Compile time
 compile(){
 cd ${KERNEL_ROOTDIR}
-#curl -LSs "https://raw.githubusercontent.com/Sorayukii/KernelSU-Next/stable/kernel/setup.sh" | bash -s hookless
+curl -LSs "https://raw.githubusercontent.com/Sorayukii/KernelSU-Next/stable/kernel/setup.sh" | bash -s hookless
 # Additional command (if you're lazy to commit :v)
 sed -i 's/CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION="-TOM-969+"/g' arch/arm64/configs/$KERNEL_DEFCONFIG
 export HASH_HEAD=$(git rev-parse --short HEAD)
@@ -169,9 +169,9 @@ function finerr() {
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 $KERNELNAME-$VARIANT-$VERSION-$KERVER-"$DATE2" * -x .git README.md ./*placeholder anykernel-real.sh .gitignore  zipsigner* *.zip
+    zip -r9 $KERNELNAME-$VARIANT-$VERSION-$KERVER-"$DATE" * -x .git README.md ./*placeholder anykernel-real.sh .gitignore  zipsigner* *.zip
 
-    ZIP_FINAL="$KERNELNAME-$VARIANT-$VERSION-$KERVER-$DATE2"
+    ZIP_FINAL="$KERNELNAME-$VARIANT-$VERSION-$KERVER-$DATE"
 
     msg "|| Signing Zip ||"
     tg_post_msg "<code>🔑 Signing Zip file with AOSP keys..</code>"
