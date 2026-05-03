@@ -28,7 +28,7 @@ GCCaPath="${MainPath}/GCC64"
 GCCbPath="${MainPath}/GCC32"
 
 # Identity
-KERNELNAME=ZEN
+KERNELNAME=TOM
 KERNEL_DEFCONFIG=X00TD_defconfig
 VARIANT=HMP
 VERSION=EOL
@@ -46,8 +46,8 @@ COMMIT_HEAD=$(git log --pretty=format:'%s' -n1)
 # Clone AOSP Clang
 ClangPath=${MainClangPath}
 [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
-mkdir $ClangPath
-rm -rf $ClangPath/*
+mkdir -p $ClangPath
+rm -rf $ClangPath
 #git clone --depth=1 https://github.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-5696680 $ClangPath
 git clone --depth=1 https://github.com/picasso09/clang-9.0.3-r353983c1 $ClangPath
 
@@ -67,7 +67,7 @@ export KBUILD_BUILD_HOST=$(cat /etc/hostname) # Change with your own name or els
 IMAGE=$(pwd)/$DEVICE_CODENAME/out/arch/arm64/boot/Image.gz-dtb
 CLANG_VER="$("$ClangPath"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
 LLD_VER="$("$ClangPath"/bin/ld.lld --version | head -n 1)"
-export KBUILD_COMPILER_STRING="$CLANG_VER with $LLD_VER"
+export KBUILD_COMPILER_STRING="$CLANG_VER"
 DATE=$(date +"%d%m%Y")
 DATE2=$(date +"%d%m%Y"-%H%M)
 START=$(date +"%s")
@@ -94,7 +94,7 @@ compile(){
 cd ${KERNEL_ROOTDIR}
 curl -LSs "https://raw.githubusercontent.com/Sorayukii/KernelSU-Next/stable/kernel/setup.sh" | bash -s hookless
 # Additional command (if you're lazy to commit :v)
-#sed -i 's/CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION="-TOM-969+"/g' arch/arm64/configs/$KERNEL_DEFCONFIG
+sed -i 's/CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION="-TOM-969"/g' arch/arm64/configs/$KERNEL_DEFCONFIG
 export HASH_HEAD=$(git rev-parse --short HEAD)
 export COMMIT_HEAD=$(git log --oneline -1)
 make -j$(nproc) O=out ARCH=arm64 $KERNEL_DEFCONFIG
@@ -122,7 +122,7 @@ make -j$(nproc) ARCH=arm64 O=out \
 	exit 1
    fi
    git clone $ANYKERNEL -b polos AnyKernel
-	cp $IMAGE AnyKernel
+   cp $IMAGE AnyKernel
 }
 
 # Push kernel to telegram
