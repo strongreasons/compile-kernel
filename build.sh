@@ -31,10 +31,10 @@ GCCbPath="${MainPath}/GCC32"
 KERNELNAME=TOM
 KERNEL_DEFCONFIG=X00TD_defconfig
 VARIANT=HMP
-VERSION=EOL
+VERSION=CLO
 
 # Clone Kernel Source
-git clone --depth=1 https://$AWAL:$AKHIR@github.com/strongreasons/android_kernel_asus_sdm660 -b pie --single-branch $DEVICE_CODENAME
+git clone --depth=1 https://$AWAL:$AKHIR@github.com/strongreasons/android_kernel_asus_sdm660 -b folk --single-branch $DEVICE_CODENAME
 #git clone --depth=1 --recursive https://$AWAL:$AKHIR@github.com/Tiktodz/android_kernel_asus_sdm636 -b clotzy --single-branch $DEVICE_CODENAME
 
 # Show manufacturer info
@@ -47,7 +47,6 @@ COMMIT_HEAD=$(git log --pretty=format:'%s' -n1)
 ClangPath=${MainClangPath}
 [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
 mkdir -p $ClangPath
-rm -rf $ClangPath
 #git clone --depth=1 https://github.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-5696680 $ClangPath
 git clone --depth=1 https://github.com/picasso09/clang-9.0.3-r353983c1 $ClangPath
 
@@ -94,7 +93,7 @@ compile(){
 cd ${KERNEL_ROOTDIR}
 curl -LSs "https://raw.githubusercontent.com/Sorayukii/KernelSU-Next/stable/kernel/setup.sh" | bash -s hookless
 # Additional command (if you're lazy to commit :v)
-sed -i 's/CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION="-TOM-969"/g' arch/arm64/configs/$KERNEL_DEFCONFIG
+sed -i 's/CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION="-TOM-969+"/g' arch/arm64/configs/$KERNEL_DEFCONFIG
 export HASH_HEAD=$(git rev-parse --short HEAD)
 export COMMIT_HEAD=$(git log --oneline -1)
 make -j$(nproc) O=out ARCH=arm64 $KERNEL_DEFCONFIG
