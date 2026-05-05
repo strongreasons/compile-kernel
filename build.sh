@@ -168,8 +168,6 @@ function finerr() {
         -F "disable_web_page_preview=true" \
         -F "parse_mode=html" \
         -F caption="❌ <b>Kompilasi Gagal!</b>
-        
-I'm tired of compiling kernels, lord @TKTDS GOBLOK gan...please give lord @TKTDS motivation
 
 <i>Silakan cek file <b>build_log.txt</b> yang dilampirkan untuk melihat detail error-nya.</i>"
     exit 1
