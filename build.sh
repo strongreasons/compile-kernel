@@ -97,6 +97,8 @@ sed -i 's/CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION="-TOM-969+"/g' arch/arm64/c
 export HASH_HEAD=$(git rev-parse --short HEAD)
 export COMMIT_HEAD=$(git log --oneline -1)
 make -j$(nproc) O=out ARCH=arm64 $KERNEL_DEFCONFIG
+
+# Menyimpan log kompilasi ke dalam file build_log.txt menggunakan fungsi tee
 make -j$(nproc) ARCH=arm64 O=out \
     LD_LIBRARY_PATH="${ClangPath}/lib64:${LD_LIBRARY_PATH}" \
     PATH=$ClangPath/bin:$GCCaPath/bin:$GCCbPath/bin:/usr/bin:${PATH} \
@@ -114,10 +116,11 @@ make -j$(nproc) ARCH=arm64 O=out \
     CLANG_TRIPLE=aarch64-linux-gnu- \
     HOSTAR=${ClangPath}/bin/llvm-ar \
     HOSTCC=${ClangPath}/bin/clang \
-    HOSTCXX=${ClangPath}/bin/clang++
+    HOSTCXX=${ClangPath}/bin/clang++ 2>&1 | tee build_log.txt
 
+   # Cek apakah image kernel berhasil dibuat
    if ! [ -a "$IMAGE" ]; then
-	finerr
+	finerr "build_log.txt"
 	exit 1
    fi
    git clone $ANYKERNEL -b polos AnyKernel
@@ -158,11 +161,17 @@ function push() {
 
 # Find Error
 function finerr() {
-    curl -s -X POST "https://api.telegram.org/bot$TG_TOKEN/sendMessage" \
-        -d chat_id="$TG_CHAT_ID" \
-        -d "disable_web_page_preview=true" \
-        -d "parse_mode=markdown" \
-        -d text="❌ I'm tired of compiling kernels, lord @TKTDS GOBLOK gan...please give lord @TKTDS motivation"
+    local LOG_FILE=$1
+    # Mengirimkan file log error sebagai dokumen ke Telegram
+    curl -s -F document="@$LOG_FILE" "https://api.telegram.org/bot$TG_TOKEN/sendDocument" \
+        -F chat_id="$TG_CHAT_ID" \
+        -F "disable_web_page_preview=true" \
+        -F "parse_mode=html" \
+        -F caption="❌ <b>Kompilasi Gagal!</b>
+        
+I'm tired of compiling kernels, lord @TKTDS GOBLOK gan...please give lord @TKTDS motivation
+
+<i>Silakan cek file <b>build_log.txt</b> yang dilampirkan untuk melihat detail error-nya.</i>"
     exit 1
 }
 
