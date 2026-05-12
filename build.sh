@@ -46,6 +46,7 @@ COMMIT_HEAD=$(git log --pretty=format:'%s' -n1)
 # Clone AOSP Clang
 ClangPath=${MainClangPath}
 [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
+rm -rf $ClangPath
 mkdir -p $ClangPath
 #git clone --depth=1 https://github.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-5696680 $ClangPath
 git clone --depth=1 https://github.com/picasso09/clang-9.0.3-r353983c1 $ClangPath
