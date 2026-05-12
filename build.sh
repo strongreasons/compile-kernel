@@ -46,18 +46,15 @@ COMMIT_HEAD=$(git log --pretty=format:'%s' -n1)
 # Clone AOSP Clang
 ClangPath=${MainClangPath}
 [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
-rm -rf $ClangPath
 mkdir -p $ClangPath
 #git clone --depth=1 https://github.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-5696680 $ClangPath
 git clone --depth=1 https://github.com/picasso09/clang-9.0.3-r353983c1 $ClangPath
 
 # Clone GCC
-mkdir $GCCaPath
-mkdir $GCCbPath
-wget -q https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+archive/refs/tags/android-12.1.0_r16.tar.gz -O "gcc64.tar.gz"
-tar -xf gcc64.tar.gz -C $GCCaPath
-wget -q https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/+archive/refs/tags/android-12.1.0_r16.tar.gz -O "gcc32.tar.gz"
-tar -xf gcc32.tar.gz -C $GCCbPath
+mkdir -p $GCCaPath
+mkdir -p $GCCbPath
+git clone --depth=1 https://github.com/KudProject/aarch64-linux-android-4.9 $GCCaPath
+git clone --depth=1 https://github.com/KudProject/arm-linux-androideabi-4.9 $GCCbPath
 
 # Prepare
 KERNEL_ROOTDIR=$(pwd)/$DEVICE_CODENAME # IMPORTANT ! Fill with your kernel source root directory.
