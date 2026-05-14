@@ -12,7 +12,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install Build Dependencies
-        run: pacman -Syu --noconfirm base-devel bc bison ccache jdk-openjdk ncurses libelf python ca-certificates curl flex clang gcc git wget zip zstd make openssl tzdata
+        run: pacman -Syu --noconfirm base-devel bc bison ccache jdk-openjdk ncurses libelf python ca-certificates curl flex clang gcc git wget zip zstd make openssl tzdata libxml2-legacy
+      - name: Hotfix Missing libxml2.so.2
+        run: |
+          ln -s /usr/lib/libxml2.so /usr/lib/libxml2.so.2
+      - name: Hotfix Missing libtinfo.so.5
+        run: |
+          ln -s /usr/lib/libprofile.so /usr/lib/libtinfo.so.5 || true
+          # Create direct links from the active ncurses 6 files
+          ln -sf /usr/lib/libncursesw.so.6 /usr/lib/libncurses.so.5
+          ln -sf /usr/lib/libtinfo.so.6 /usr/lib/libtinfo.so.5
       - name: Build Kernel
         env:
           TOKEN: ${{ secrets.TOKEN }}
