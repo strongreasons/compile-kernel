@@ -11,8 +11,8 @@ jobs:
       image: archlinux:latest
     steps:
       - uses: actions/checkout@v4
-      - name: Setup env
-        run: sudo pacman -Syu --noconfirm base-devel bc bison ccache jdk-openjdk ncurses libelf python ca-certificates curl flex clang gcc git wget zip zstd make openssl tzdata
+      - name: Install Build Dependencies
+        run: pacman -Syu --noconfirm base-devel bc bison ccache jdk-openjdk ncurses libelf python ca-certificates curl flex clang gcc git wget zip zstd make openssl tzdata
       - name: Build Kernel
         env:
           TOKEN: ${{ secrets.TOKEN }}
