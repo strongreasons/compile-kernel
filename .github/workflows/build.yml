@@ -13,9 +13,6 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install Build Dependencies
         run: pacman -Syu --noconfirm base-devel bc bison ccache jdk-openjdk ncurses libelf python ca-certificates curl flex clang gcc git wget zip zstd make openssl tzdata libxml2-legacy
-      - name: Hotfix Missing libxml2.so.2
-        run: |
-          ln -s /usr/lib/libxml2.so /usr/lib/libxml2.so.2
       - name: Hotfix Missing libtinfo.so.5
         run: |
           ln -s /usr/lib/libprofile.so /usr/lib/libtinfo.so.5 || true
