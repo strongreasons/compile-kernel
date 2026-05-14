@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup env
-        run: pacman -Sy --noconfirm sudo && sudo pacman -Sy --noconfirm base-devel bc bison ccache jdk-openjdk ncurses libelf python ca-certificates curl flex clang gcc git wget zip zstd make openssl tzdata
+        run: pacman -Sy --noconfirm sudo && sudo pacman -Sy --noconfirm base-devel bc bison ccache jdk-openjdk ncurses libelf python ca-certificates curl flex clang gcc git wget zip zstd make ncurses5-compat-libs openssl tzdata
       - name: Build Kernel
         env:
           TOKEN: ${{ secrets.TOKEN }}
