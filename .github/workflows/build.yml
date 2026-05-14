@@ -1,4 +1,3 @@
-
 name: Kneba-Kernel Builder
 
 on:
@@ -13,7 +12,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup env
-        run: pacman -Sy --noconfirm sudo && sudo pacman -Sy --noconfirm base-devel bc bison ccache jdk-openjdk ncurses libelf python ca-certificates curl flex clang gcc git wget zip zstd make ncurses5-compat-libs openssl tzdata
+        run: pacman -Sy --noconfirm sudo && sudo pacman -Sy --noconfirm base-devel bc bison ccache jdk-openjdk ncurses libelf python ca-certificates curl flex clang gcc git wget zip zstd make openssl tzdata
+      - name: Arch User Repository
+        run: yay -S ncurses5-compat-libs
       - name: Build Kernel
         env:
           TOKEN: ${{ secrets.TOKEN }}
