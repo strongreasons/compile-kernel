@@ -29,12 +29,12 @@ GCCbPath="${MainPath}/GCC32"
 
 # Identity
 KERNELNAME=TOM
-KERNEL_DEFCONFIG=vendor/asus/X00TD_defconfig
+KERNEL_DEFCONFIG=X00TD_defconfig
 VARIANT=HMP
-VERSION=CLO
+VERSION=EOL
 
 # Clone Kernel Source
-git clone --depth=1 https://$AWAL:$AKHIR@github.com/strongreasons/android_kernel_asus_sdm660 -b r44 --single-branch $DEVICE_CODENAME
+git clone --depth=1 https://$AWAL:$AKHIR@github.com/strongreasons/android_kernel_asus_sdm660 -b 20 --single-branch $DEVICE_CODENAME
 #git clone --depth=1 --recursive https://$AWAL:$AKHIR@github.com/Tiktodz/android_kernel_asus_sdm636 -b clotzy --single-branch $DEVICE_CODENAME
 
 # Show manufacturer info
@@ -48,13 +48,13 @@ ClangPath=${MainClangPath}
 [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
 mkdir -p $ClangPath
 #git clone --depth=1 https://github.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-5696680 $ClangPath
-git clone --depth=1 https://github.com/picasso09/clang-9.0.3-r353983c1 $ClangPath
+git clone --depth=1 https://github.com/RyuujiX/SDClang -b 14 $ClangPath
 
 # Clone GCC
 mkdir -p $GCCaPath
 mkdir -p $GCCbPath
-git clone --depth=1 https://github.com/KudProject/aarch64-linux-android-4.9 $GCCaPath
-git clone --depth=1 https://github.com/KudProject/arm-linux-androideabi-4.9 $GCCbPath
+git clone --depth=1 https://github.com/Kneba/aarch64-linux-android-4.9 $GCCaPath
+git clone --depth=1 https://github.com/Kneba/arm-linux-androideabi-4.9 $GCCbPath
 
 # Prepare
 KERNEL_ROOTDIR=$(pwd)/$DEVICE_CODENAME # IMPORTANT ! Fill with your kernel source root directory.
@@ -62,7 +62,7 @@ export LD=ld.lld
 export KBUILD_BUILD_USER=eunjix # Change with your own name or else.
 export KBUILD_BUILD_HOST=$(cat /etc/hostname) # Change with your own name or else.
 IMAGE=$(pwd)/$DEVICE_CODENAME/out/arch/arm64/boot/Image.gz-dtb
-CLANG_VER="$("$ClangPath"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
+CLANG_VER="Snapdragon™ clang version 14.1.5"
 LLD_VER="$("$ClangPath"/bin/ld.lld --version | head -n 1)"
 export KBUILD_COMPILER_STRING="$CLANG_VER"
 DATE=$(date +"%d%m%Y")
@@ -97,24 +97,15 @@ export COMMIT_HEAD=$(git log --oneline -1)
 make -j$(nproc) O=out ARCH=arm64 $KERNEL_DEFCONFIG
 
 # Menyimpan log kompilasi ke dalam file build_log.txt menggunakan fungsi tee
-make -j$(nproc) ARCH=arm64 O=out \
-    LD_LIBRARY_PATH="${ClangPath}/lib64:${LD_LIBRARY_PATH}" \
+make -j$(nproc) ARCH=arm64 O=out LLVM=1 \
+    LD_LIBRARY_PATH="${ClangPath}/lib:${LD_LIBRARY_PATH}" \
     PATH=$ClangPath/bin:$GCCaPath/bin:$GCCbPath/bin:/usr/bin:${PATH} \
     CC=${ClangPath}/bin/clang \
-    NM=${ClangPath}/bin/llvm-nm \
-    CXX=${ClangPath}/bin/clang++ \
-    AR=${ClangPath}/bin/llvm-ar \
-    STRIP=${ClangPath}/bin/llvm-strip \
-    OBJCOPY=${ClangPath}/bin/llvm-objcopy \
-    OBJDUMP=${ClangPath}/bin/llvm-objdump \
-    OBJSIZE=${ClangPath}/bin/llvm-size \
-    READELF=${ClangPath}/bin/llvm-readelf \
     CROSS_COMPILE=aarch64-linux-android- \
     CROSS_COMPILE_ARM32=arm-linux-androideabi- \
     CLANG_TRIPLE=aarch64-linux-gnu- \
-    HOSTAR=${ClangPath}/bin/llvm-ar \
-    HOSTCC=${ClangPath}/bin/clang \
-    HOSTCXX=${ClangPath}/bin/clang++ 2>&1 | tee build_log.txt
+    HOSTCC=gcc \
+    HOSTCXX=g++ 2>&1 | tee build_log.txt
 
    # Cek apakah image kernel berhasil dibuat
    if ! [ -a "$IMAGE" ]; then
