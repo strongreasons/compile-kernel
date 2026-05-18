@@ -29,7 +29,7 @@ GCCbPath="${MainPath}/GCC32"
 
 # Identity
 KERNELNAME=TOM
-KERNEL_DEFCONFIG=X00TD_defconfig
+KERNEL_DEFCONFIG=vendor/asus/X00TD_defconfig
 VARIANT=HMP
 VERSION=EOL
 
