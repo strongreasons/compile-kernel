@@ -1,12 +1,10 @@
 #!/usr/bin/env bash
-#
-# Copyright (C) 2023 Kneba <abenkenary3@gmail.com>
-#
 
 #
+# Copyright (C) 2022-2025 Kneba <abenkenary3@gmail.com>
+#
+
 # Function to show an informational message
-#
-
 msg() {
 	echo
     echo -e "\e[1;32m$*\e[0m"
@@ -25,61 +23,56 @@ cdir() {
 # Main
 MainPath="$(pwd)"
 MainClangPath="${MainPath}/clang"
-MainClangZipPath="${MainPath}/clang-zip"
-ClangPath="${MainClangZipPath}"
+ClangPath=${MainClangPath}
 GCCaPath="${MainPath}/GCC64"
 GCCbPath="${MainPath}/GCC32"
-MainZipGCCaPath="${MainPath}/GCC64-zip"
-MainZipGCCbPath="${MainPath}/GCC32-zip"
 
 # Identity
-KERNELNAME=TheOneMemory
-CODENAME=Hayzel
+KERNELNAME=TOM
+KERNEL_DEFCONFIG=darkonah_defconfig
 VARIANT=EAS
-BASE=EOL
+VERSION=EOL
 
-# The name of the Kernel, to name the ZIP
-ZIPNAME="$KERNELNAME-$CODENAME-$VARIANT-$BASE"
+# Clone Kernel Source
+git clone --depth=1 https://$AWAL:$AKHIR@github.com/strongreasons/android_kernel_asus_sdm660 -b dark --single-branch $DEVICE_CODENAME
 
 # Show manufacturer info
 MANUFACTURERINFO="ASUSTek Computer Inc."
 
-# Clone Kernel Source
-git clone --depth=1 https://github.com/strongreasons/android_kernel_asus_sdm660 -b eas $DEVICE_CODENAME
+# Set a commit head
+COMMIT_HEAD=$(git log --pretty=format:'%s' -n1)
 
 # Clone AOSP Clang
-ClangPath=${MainClangZipPath}
+ClangPath=${MainClangPath}
 [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
-rm -rf $ClangPath/*
-mkdir $ClangPath
-
-#git clone --depth=1 https://gitlab.com/ImSurajxD/clang-r450784d -b master $ClangPath
-wget -q https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/master/clang-r487747c.tar.gz -O "clang-r487747c.tar.gz"
-tar -xf clang-r487747c.tar.gz -C $ClangPath
+mkdir -p $ClangPath
+#git clone --depth=1 https://github.com/crdroidandroid/android_prebuilts_clang_host_linux-x86_clang-5696680 $ClangPath
+git clone --depth=1 https://github.com/picasso09/clang-9.0.3-r353983c1 $ClangPath
 
 # Clone GCC
-rm -rf $GCCaPath/*
-rm -rf $GCCbPath/*
-mkdir $GCCaPath
-mkdir $GCCbPath
-wget -q https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+archive/refs/tags/android-12.1.0_r27.tar.gz -O "gcc64.tar.gz"
-tar -xf gcc64.tar.gz -C $GCCaPath
-wget -q https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/+archive/refs/tags/android-12.1.0_r27.tar.gz -O "gcc32.tar.gz"
-tar -xf gcc32.tar.gz -C $GCCbPath
+mkdir -p $GCCaPath
+mkdir -p $GCCbPath
+git clone --depth=1 https://github.com/KudProject/aarch64-linux-android-4.9 $GCCaPath
+git clone --depth=1 https://github.com/KudProject/arm-linux-androideabi-4.9 $GCCbPath
 
-# Prepared
+# Prepare
 KERNEL_ROOTDIR=$(pwd)/$DEVICE_CODENAME # IMPORTANT ! Fill with your kernel source root directory.
 export LD=ld.lld
-export KBUILD_BUILD_USER=queen # Change with your own name or else.
+export KBUILD_BUILD_USER=eunjix # Change with your own name or else.
+export KBUILD_BUILD_HOST=$(cat /etc/hostname) # Change with your own name or else.
 IMAGE=$(pwd)/$DEVICE_CODENAME/out/arch/arm64/boot/Image.gz-dtb
 CLANG_VER="$("$ClangPath"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
 LLD_VER="$("$ClangPath"/bin/ld.lld --version | head -n 1)"
-export KBUILD_COMPILER_STRING="$CLANG_VER with $LLD_VER"
+export KBUILD_COMPILER_STRING="$CLANG_VER"
 DATE=$(date +"%d%m%Y")
+DATE2=$(date +"%d%m%Y"-%H%M)
 START=$(date +"%s")
 
 # Java
 command -v java > /dev/null 2>&1
+
+# Check Kernel Version
+KERVER=$(cd $KERNEL_ROOTDIR; make kernelversion)
 
 # Telegram
 export BOT_MSG_URL="https://api.telegram.org/bot$TG_TOKEN/sendMessage"
@@ -91,12 +84,18 @@ tg_post_msg() {
     -d "parse_mode=html" \
     -d text="$1"
 }
-# Compiler
+
+# Compile time
 compile(){
 cd ${KERNEL_ROOTDIR}
+curl -LSs "https://raw.githubusercontent.com/Sorayukii/KernelSU-Next/stable/kernel/setup.sh" | bash -s hookless
+# Additional command (if you're lazy to commit :v)
+sed -i 's/CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION="-TOM-969+"/g' arch/arm64/configs/$KERNEL_DEFCONFIG
 export HASH_HEAD=$(git rev-parse --short HEAD)
 export COMMIT_HEAD=$(git log --oneline -1)
 make -j$(nproc) O=out ARCH=arm64 $KERNEL_DEFCONFIG
+
+# Menyimpan log kompilasi ke dalam file build_log.txt menggunakan fungsi tee
 make -j$(nproc) ARCH=arm64 O=out \
     LD_LIBRARY_PATH="${ClangPath}/lib64:${LD_LIBRARY_PATH}" \
     PATH=$ClangPath/bin:$GCCaPath/bin:$GCCbPath/bin:/usr/bin:${PATH} \
@@ -114,15 +113,17 @@ make -j$(nproc) ARCH=arm64 O=out \
     CLANG_TRIPLE=aarch64-linux-gnu- \
     HOSTAR=${ClangPath}/bin/llvm-ar \
     HOSTCC=${ClangPath}/bin/clang \
-    HOSTCXX=${ClangPath}/bin/clang++
+    HOSTCXX=${ClangPath}/bin/clang++ 2>&1 | tee build_log.txt
 
+   # Cek apakah image kernel berhasil dibuat
    if ! [ -a "$IMAGE" ]; then
-	finerr
+	finerr "build_log.txt"
 	exit 1
    fi
-   git clone $ANYKERNEL -b eas AnyKernel
-	cp $IMAGE AnyKernel
+   git clone $ANYKERNEL -b polos AnyKernel
+   cp $IMAGE AnyKernel
 }
+
 # Push kernel to telegram
 function push() {
     cd AnyKernel
@@ -130,73 +131,62 @@ function push() {
         -F chat_id="$TG_CHAT_ID" \
         -F "disable_web_page_preview=true" \
         -F "parse_mode=html" \
-        -F caption="🔐<b>Build Done</b>
+        -F caption="✅<b>Build Done</b>
         - <code>$((DIFF / 60)) minute(s) $((DIFF % 60)) second(s)... </code>
+
         <b>📅 Build Date: </b>
         -<code>$DATE</code>
+
         <b>🐧 Linux Version: </b>
-        -<code>4.4.302</code>
+        -<code>$KERVER</code>
+
          <b>💿 Compiler: </b>
-        -<code>$KBUILD_COMPILER_STRING</code>
+        -<code>$CLANG_VER</code>
+
         <b>📱 Device: </b>
-        -<code>$DEVICE_CODENAME($MANUFACTURERINFO)</code>
+        -<code>$DEVICE_CODENAME x ($MANUFACTURERINFO)</code>
+
         <b>🆑 Changelog: </b>
         - <code>$COMMIT_HEAD</code>
         <b></b>
-        #$KERNELNAME #$CODENAME #$VARIANT"
+
+        <b>Ⓜ MD5: </b>
+        - <code>$MD5CHECK</code>
+        <b></b>
+        #O #Q #$VERSION #$VARIANT"
 }
+
 # Find Error
 function finerr() {
-    curl -s -X POST "https://api.telegram.org/bot$TG_TOKEN/sendMessage" \
-        -d chat_id="$TG_CHAT_ID" \
-        -d "disable_web_page_preview=true" \
-        -d "parse_mode=markdown" \
-        -d text="❌ Tetap menyerah...Pasti bisa!!!"
+    local LOG_FILE=$1
+    # Mengirimkan file log error sebagai dokumen ke Telegram
+    curl -s -F document="@$LOG_FILE" "https://api.telegram.org/bot$TG_TOKEN/sendDocument" \
+        -F chat_id="$TG_CHAT_ID" \
+        -F "disable_web_page_preview=true" \
+        -F "parse_mode=html" \
+        -F caption="❌ <b>Kompilasi Gagal!</b>
+
+<i>Silakan cek file <b>build_log.txt</b> yang dilampirkan untuk melihat detail error-nya.</i>"
     exit 1
 }
+
 # Zipping
 function zipping() {
-	cd AnyKernel || exit 1
-	cp -af $KERNEL_ROOTDIR/init.$CODENAME.Spectrum.rc spectrum/init.spectrum.rc && sed -i "s/persist.spectrum.kernel.*/persist.spectrum.kernel TheOneMemory/g" spectrum/init.spectrum.rc
-	cp -af $KERNEL_ROOTDIR/changelog META-INF/com/google/android/aroma/changelog.txt
-	cp -af anykernel-real.sh anykernel.sh
-	sed -i "s/kernel.string=.*/kernel.string=$KERNELNAME/g" anykernel.sh
-	sed -i "s/kernel.type=.*/kernel.type=$VARIANT/g" anykernel.sh
-	sed -i "s/kernel.for=.*/kernel.for=$CODENAME/g" anykernel.sh
-	sed -i "s/kernel.compiler=.*/kernel.compiler=$KBUILD_COMPILER_STRING/g" anykernel.sh
-	sed -i "s/kernel.made=.*/kernel.made=dotkit @fakedotkit/g" anykernel.sh
-	sed -i "s/kernel.version=.*/kernel.version=$KERVER/g" anykernel.sh
-	sed -i "s/message.word=.*/message.word=Appreciate your efforts for choosing TheOneMemory kernel./g" anykernel.sh
-	sed -i "s/build.date=.*/build.date=$DATE/g" anykernel.sh
-	sed -i "s/build.type=.*/build.type=$BASE/g" anykernel.sh
-	sed -i "s/supported.versions=.*/supported.versions=9-13/g" anykernel.sh
-	sed -i "s/device.name1=.*/device.name1=X00TD/g" anykernel.sh
-	sed -i "s/device.name2=.*/device.name2=X00T/g" anykernel.sh
-	sed -i "s/device.name3=.*/device.name3=Zenfone Max Pro M1 (X00TD)/g" anykernel.sh
-	sed -i "s/device.name4=.*/device.name4=ASUS_X00TD/g" anykernel.sh
-	sed -i "s/device.name5=.*/device.name5=ASUS_X00T/g" anykernel.sh
-	sed -i "s/X00TD=.*/X00TD=1/g" anykernel.sh
-	cd META-INF/com/google/android
-	sed -i "s/KNAME/$KERNELNAME/g" aroma-config
-	sed -i "s/KVER/$KERVER/g" aroma-config
-	sed -i "s/KAUTHOR/dotkit @fakedotkit/g" aroma-config
-	sed -i "s/KDEVICE/Zenfone Max Pro M1/g" aroma-config
-	sed -i "s/KBDATE/$DATE/g" aroma-config
-	sed -i "s/KVARIANT/$VARIANT/g" aroma-config
-	cd ../../../..
+    cd AnyKernel || exit 1
+    zip -r9 $KERNELNAME-$VARIANT-$VERSION-$KERVER-"$DATE" * -x .git README.md ./*placeholder anykernel-real.sh .gitignore  zipsigner* *.zip
 
-	zip -r9 $ZIPNAME-"$DATE" * -x .git README.md anykernel-real.sh .gitignore zipsigner* *.zip
- 
-	## Prepare a final zip variable
-	ZIP_FINAL="$ZIPNAME-$DATE"
+    ZIP_FINAL="$KERNELNAME-$VARIANT-$VERSION-$KERVER-$DATE"
 
-	msg "|| Signing Zip ||"
-	tg_post_msg "<code>🔑 Signing Zip file with AOSP keys..</code>"
+    msg "|| Signing Zip ||"
+    tg_post_msg "<code>🔑 Signing Zip file with AOSP keys..</code>"
 
-	curl -sLo zipsigner-3.0.jar https://github.com/Magisk-Modules-Repo/zipsigner/raw/master/bin/zipsigner-3.0-dexed.jar
-	java -jar zipsigner-3.0.jar "$ZIP_FINAL".zip "$ZIP_FINAL"-signed.zip
-	ZIP_FINAL="$ZIP_FINAL-signed"
-	cd ..
+    mv $ZIP_FINAL* kernel.zip
+    curl -sLo zipsigner-3.0-dexed.jar https://github.com/Magisk-Modules-Repo/zipsigner/raw/master/bin/zipsigner-3.0-dexed.jar
+    java -jar zipsigner-3.0-dexed.jar kernel.zip kernel-signed.zip
+    ZIP_FINAL="$ZIP_FINAL-signed"
+    mv kernel-signed.zip $ZIP_FINAL.zip
+    MD5CHECK=$(md5sum "$ZIP_FINAL.zip" | cut -d' ' -f1)
+    cd ..
 }
 
 compile
