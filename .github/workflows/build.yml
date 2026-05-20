@@ -1,4 +1,3 @@
-
 name: Kneba-Kernel Builder
 
 on:
@@ -9,11 +8,11 @@ jobs:
 
     runs-on: ubuntu-latest
     container:
-      image: panchajanya1999/archlinux:latest
+      image: archlinux:latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Setup env
-        run: pacman -Syu --needed --noconfirm wget base-devel ccache xmlto inetutils bc cpio graphviz imagemagick git python3 zip tzdata mr curl
+        run: pacman -Sy --noconfirm sudo && sudo pacman -Sy --noconfirm base-devel bc bison ccache jdk-openjdk ncurses libelf python ca-certificates curl flex clang gcc git wget zip zstd make openssl tzdata
       - name: Build Kernel
         env:
           TOKEN: ${{ secrets.TOKEN }}
@@ -23,6 +22,8 @@ jobs:
           KERNEL_DEFCONFIG: ${{ secrets.KERNEL_DEFCONFIG }}
           DEVICE_CODENAME: ${{ secrets.DEVICE_CODENAME }}
           ANYKERNEL: ${{ secrets.ANYKERNEL }}
+          AWAL: ${{ secrets.AWAL }}
+          AKHIR: ${{ secrets.AKHIR }}
         run: |
           export token=${TG_TOKEN}
           export git=${TOKEN}
