@@ -29,13 +29,14 @@ GCCbPath="${MainPath}/GCC32"
 
 # Identity
 KERNELNAME=TOM
-KERNEL_DEFCONFIG=vendor/asus/X00TD_defconfig
+KERNEL_DEFCONFIG=X00T_defconfig
 VARIANT=HMP
-VERSION=CLO
+VERSION=EOL
 
 # Clone Kernel Source
 #git clone --depth=1 https://$AWAL:$AKHIR@github.com/strongreasons/android_kernel_asus_sdm660 -b r44 --single-branch $DEVICE_CODENAME
-git clone --depth=1 https://$AWAL:$AKHIR@github.com/strongreasons/android_kernel_asus_sdm660 -b 10-apatch --single-branch $DEVICE_CODENAME
+#git clone --depth=1 https://$AWAL:$AKHIR@github.com/strongreasons/android_kernel_asus_sdm660 -b 10-apatch --single-branch $DEVICE_CODENAME
+git clone --depth=1 https://$AWAL:$AKHIR@github.com/strongreasons/android_kernel_asus_sdm660 -b sepuluh --single-branch $DEVICE_CODENAME
 #git clone --depth=1 https://$AWAL:$AKHIR@github.com/Tiktodz/android_kernel_asus_sdm636 -b tzy --single-branch $DEVICE_CODENAME
 #git clone --depth=1 https://$AWAL:$AKHIR@github.com/Tiktodz/android_kernel_asus_sdm636 -b clotzy --single-branch $DEVICE_CODENAME
 
