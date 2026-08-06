@@ -34,7 +34,7 @@ VARIANT=HMP
 VERSION=EOL
 
 # Clone Kernel Source
-git clone --depth=1 https://$AWAL:$AKHIR@github.com/strongreasons/android_kernel_asus_sdm660 -b 20 --single-branch $DEVICE_CODENAME
+#git clone --depth=1 https://$AWAL:$AKHIR@github.com/strongreasons/android_kernel_asus_sdm660 -b 20 --single-branch $DEVICE_CODENAME
 git clone --depth=1 https://$AWAL:$AKHIR@github.com/strongreasons/android_kernel_asus_sdm660 -b sepuluh --single-branch $DEVICE_CODENAME
 #git clone --depth=1 --recursive https://$AWAL:$AKHIR@github.com/Tiktodz/android_kernel_asus_sdm636 -b clotzy --single-branch $DEVICE_CODENAME
 
@@ -90,7 +90,7 @@ tg_post_msg() {
 # Compile time
 compile(){
 cd ${KERNEL_ROOTDIR}
-curl -LSs "https://raw.githubusercontent.com/Sorayukii/KernelSU-Next/stable/kernel/setup.sh" | bash -s hookless
+#curl -LSs "https://raw.githubusercontent.com/Sorayukii/KernelSU-Next/stable/kernel/setup.sh" | bash -s hookless
 # Additional command (if you're lazy to commit :v)
 #sed -i 's/CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION="-TOM-969+"/g' arch/arm64/configs/$KERNEL_DEFCONFIG
 export HASH_HEAD=$(git rev-parse --short HEAD)
