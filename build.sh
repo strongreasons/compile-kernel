@@ -29,14 +29,14 @@ GCCbPath="${MainPath}/GCC32"
 
 # Identity
 KERNELNAME=TOM
-KERNEL_DEFCONFIG=X00T_defconfig
+KERNEL_DEFCONFIG=vendor/asus/X00TD_defconfig
 VARIANT=HMP
 VERSION=EOL
 
 # Clone Kernel Source
 #git clone --depth=1 https://$AWAL:$AKHIR@github.com/strongreasons/android_kernel_asus_sdm660 -b r44 --single-branch $DEVICE_CODENAME
-#git clone --depth=1 https://$AWAL:$AKHIR@github.com/strongreasons/android_kernel_asus_sdm660 -b 10-apatch --single-branch $DEVICE_CODENAME
-git clone --depth=1 https://$AWAL:$AKHIR@github.com/strongreasons/android_kernel_asus_sdm660 -b sepuluh --single-branch $DEVICE_CODENAME
+git clone --depth=1 https://$AWAL:$AKHIR@github.com/strongreasons/android_kernel_asus_sdm660 -b 10-apatch --single-branch $DEVICE_CODENAME
+#git clone --depth=1 https://$AWAL:$AKHIR@github.com/strongreasons/android_kernel_asus_sdm660 -b sepuluh --single-branch $DEVICE_CODENAME
 #git clone --depth=1 https://$AWAL:$AKHIR@github.com/Tiktodz/android_kernel_asus_sdm636 -b tzy --single-branch $DEVICE_CODENAME
 #git clone --depth=1 https://$AWAL:$AKHIR@github.com/Tiktodz/android_kernel_asus_sdm636 -b clotzy --single-branch $DEVICE_CODENAME
 
@@ -94,7 +94,7 @@ compile(){
 cd ${KERNEL_ROOTDIR}
 #curl -LSs "https://raw.githubusercontent.com/Sorayukii/KernelSU-Next/stable/kernel/setup.sh" | bash -s hookless
 # Additional command (if you're lazy to commit :v)
-#sed -i 's/CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION="-TheOneMemory"/g' arch/arm64/configs/$KERNEL_DEFCONFIG
+sed -i 's/CONFIG_LOCALVERSION=.*/CONFIG_LOCALVERSION="-TheOneMemory"/g' arch/arm64/configs/$KERNEL_DEFCONFIG
 export HASH_HEAD=$(git rev-parse --short HEAD)
 export COMMIT_HEAD=$(git log --oneline -1)
 make -j$(nproc) O=out ARCH=arm64 $KERNEL_DEFCONFIG
