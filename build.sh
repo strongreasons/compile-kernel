@@ -29,13 +29,13 @@ GCCbPath="${MainPath}/GCC32"
 
 # Identity
 KERNELNAME=TOM
-KERNEL_DEFCONFIG=X00T_defconfig
+KERNEL_DEFCONFIG=X00TD_defconfig
 VARIANT=HMP
 VERSION=EOL
 
 # Clone Kernel Source
 #git clone --depth=1 https://$AWAL:$AKHIR@github.com/strongreasons/android_kernel_asus_sdm660 -b 20 --single-branch $DEVICE_CODENAME
-git clone --depth=1 https://$AWAL:$AKHIR@github.com/strongreasons/android_kernel_asus_sdm660 -b sepuluh --single-branch $DEVICE_CODENAME
+git clone --depth=1 https://$AWAL:$AKHIR@github.com/strongreasons/android_kernel_asus_sdm660 -b end --single-branch $DEVICE_CODENAME
 #git clone --depth=1 --recursive https://$AWAL:$AKHIR@github.com/Tiktodz/android_kernel_asus_sdm636 -b clotzy --single-branch $DEVICE_CODENAME
 
 # Show manufacturer info
@@ -60,7 +60,7 @@ git clone --depth=1 https://github.com/Kneba/arm-linux-androideabi-4.9 $GCCbPath
 # Prepare
 KERNEL_ROOTDIR=$(pwd)/$DEVICE_CODENAME # IMPORTANT ! Fill with your kernel source root directory.
 export LD=ld.lld
-export KBUILD_BUILD_USER=eunjix # Change with your own name or else.
+export KBUILD_BUILD_USER=eunjixyz # Change with your own name or else.
 export KBUILD_BUILD_HOST=$(cat /etc/hostname) # Change with your own name or else.
 IMAGE=$(pwd)/$DEVICE_CODENAME/out/arch/arm64/boot/Image.gz-dtb
 CLANG_VER="Snapdragon™ clang version 14.1.5"
@@ -166,9 +166,9 @@ function finerr() {
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 $KERNELNAME-$VARIANT-$VERSION-$KERVER-"$DATE2" * -x .git README.md ./*placeholder anykernel-real.sh .gitignore  zipsigner* *.zip
+    zip -r9 $KERNELNAME-$VARIANT-$VERSION-$KERVER-"$DATE" * -x .git README.md ./*placeholder anykernel-real.sh .gitignore  zipsigner* *.zip
 
-    ZIP_FINAL="$KERNELNAME-$VARIANT-$VERSION-$KERVER-$DATE2"
+    ZIP_FINAL="$KERNELNAME-$VARIANT-$VERSION-$KERVER-$DATE"
 
     msg "|| Signing Zip ||"
     tg_post_msg "<code>🔑 Signing Zip file with AOSP keys..</code>"
